@@ -2,18 +2,13 @@ package PressureFlow;
 
 public class Main {
     public static void main(String[] args) {
-//        PipeSize pipeSize = new PipeSize(1600.00);
-//        System.out.println(pipeSize.getInnerDiameter());
-//        System.out.println(pipeSize.getCrossSectionArea());
-//
-//        PipeLineDimensions pipeLineDimensions = new PipeLineDimensions(100, 15000);
-//        System.out.println(pipeLineDimensions.getInnerDiameter());
-//        System.out.println(pipeLineDimensions.getLength());
-        Velocity velocityReinolds = new Velocity(100, 1000, 20);
-        System.out.println(velocityReinolds.getVelocity());
-        ReinoldsNumber reinoldsNumber = new ReinoldsNumber(100,1000,20);
-        System.out.println(reinoldsNumber.getReinoldsNumber());
-
+        HeadLosses headLosses = new HeadLosses(300, 1000, 70, 0.4);
+        System.out.println(String.format("Pipe diameter, mm = %.0f mm", headLosses.getInnerDiameter()*1000));
+        System.out.println(String.format("Pipe length = %.2fm", headLosses.getLength()));
+        System.out.println(String.format("System roughness = %.2f mm", headLosses.getSystemRoughness()*1000));
+        System.out.println(String.format("Flow = %.2f l/s", headLosses.getFlow()*1000));
+        System.out.println(String.format("Velocity = %.2f m/s", headLosses.getVelocity()));
+        System.out.println(String.format("Total head losses = %.2f m", headLosses.getHeadLosses()));
 
     }
 }
