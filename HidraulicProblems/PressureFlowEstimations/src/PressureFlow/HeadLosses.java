@@ -21,4 +21,7 @@ public class HeadLosses extends ColbrukWhiteEquation {
     public double getHeadLosses() {
         return headLosses;
     }
+    public double estimateHeadLossesPerMeter () {
+        return this.getHeadLosses() / super.getLength();
+    }
 }
