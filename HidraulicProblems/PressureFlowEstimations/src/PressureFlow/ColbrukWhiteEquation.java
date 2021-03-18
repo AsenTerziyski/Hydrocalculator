@@ -19,9 +19,17 @@ public class ColbrukWhiteEquation extends ReinoldsNumber {
         while (true) {
             equation = -2 * Math.log10((2.51 / (Re * Math.sqrt(currentLambda)) + k / (3.7 * d))) * Math.sqrt(currentLambda);
             if (equation >= 1) {
-                return currentLambda;
+                currentLambda += 0.000000001;
+                if (equation == 1) {
+                    return currentLambda;
+                }
+
+            } else {
+                if(equation < 1) {
+                    return currentLambda;
+                }
+                currentLambda-=0.000000001;
             }
-            currentLambda += 0.000000001;
         }
     }
 
