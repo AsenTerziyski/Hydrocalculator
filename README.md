@@ -1,1 +1,1 @@
-Hydrocalculator is simple bu powerfull tool go calculating head losses in pressurised pipes.
+Hydrocalculator is simple but powerfull tool for calculating head losses in pressurised pipes. It can be user by civil engineers and students at UACEG, Sofia.
