@@ -30,6 +30,4 @@ public class HydroCalculator {
 
     }
 
-//        public static void calculateRectangleSection () {
-//        }
 }
