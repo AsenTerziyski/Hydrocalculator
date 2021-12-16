@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head"></head>
+
+<body class="bg-dark">
+<header th:replace="fragments/commons::nav"></header>
+
+<main role="main" class="bg-dark">
+
+
+    <div th:object="${result}" class="container align-content-center bg-dark p-2 mt-3">
+        <div class="row align-content-center bg-dark">
+            <li class="list-group-item bg-dark text-warning">
+                <h6>
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| Вътрешен диаметър: DI=*{#numbers.formatDecimal(pipeInternalDiameter,1,2)}mm;|">di</span>
+                    </div>
+                    <br>
+
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| Грапавина: k=*{#numbers.formatDecimal(roughnessHeightInMm,1,2)}mm;|">грапавина</span>
+                    </div>
+                    <br>
+
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| Дължина на тръбопровода: L=*{#numbers.formatDecimal(pipeTotalLength,1,2)}m;|">дължина</span>
+                    </div>
+                    <br>
+
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| Водно количество: Q=*{#numbers.formatDecimal(flowInLitersPerSecond,1,2)}l/s;|">водно количество</span>
+                    </div>
+                    <br>
+
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| Скорост: V=*{#numbers.formatDecimal(velocityInMetersPerSecond,1,2)}m/s;|">скорост</span>
+                    </div>
+                    <br>
+
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| Хидравличен наклон: i=*{#numbers.formatDecimal(lossesPerMeter,1,5)}m/m;|">хидравличен наклон</span>
+                    </div>
+                    <br>
+
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| Общо загуби на напор: H=*{#numbers.formatDecimal(totalLosses,1,2)}m.|">общо загуби</span>
+                    </div>
+                    <br>
+                </h6>
+            </li>
+        </div>
+    </div>
+
+    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5" href="/"
+       role="button">BACK</a>
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>
