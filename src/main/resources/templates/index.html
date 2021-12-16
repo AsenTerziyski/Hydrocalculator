@@ -12,9 +12,9 @@
 
     <!--     Top Container-->
     <section class="top-container">
-        <a th:fragment="welcome" class="site-header text-warning">
-            <h2 sec:authorize="!isAuthenticated()">WELCOME TO HYDRO CALCULATOR! PLEASE REGISTER/LOGIN.</h2>
-            <h2 sec:authorize="isAuthenticated()">Welcome,
+        <a th:fragment="welcome" class="site-header text-warning mb-0">
+            <h2 sec:authorize="!isAuthenticated()">ДОБРЕ ДОШЛИ В ХИДРОКАЛКУЛАТОР!</h2>
+            <h2 sec:authorize="isAuthenticated()">Добре дошъл,
                 <th:block sec:authentication="name"></th:block>
                 !
             </h2>
@@ -36,20 +36,19 @@
         <!--            </div>-->
     </section>
     <!--     Boxes Section-->
-    <section class="boxes mt-5">
+    <section class="boxes mt-1 mb-5">
 
-        <a href="/" class="main-btn" sec:authorize="isAuthenticated()">
-            <div class="box">
-                <img src="/images/bicycle.png" height="150px" alt="">
-                <h3>MY CALCULATIONS</h3>
-                <p>RESULT HISTORY</p>
+        <a href="/" class="main-btn bg-dark text-info" sec:authorize="isAuthenticated()">
+            <div class="box bg-dark">
+                <img src="/images/hydricalclogo.jpg" height="150px" alt="">
+                <h3>Моите изчисления</h3>
+                <p>История</p>
             </div>
         </a>
         <a href="/" class="main-btn bg-dark text-info" sec:authorize="!isAuthenticated()">
             <div class="box bg-dark text-info">
-                <img src="/images/depositphotos_5529156-stock-photo-clean-drinking-water.jpg" height="200px" alt="">
-                <h3>ABOUT HYDROCLACULATOR</h3>
-                <p>ABOUT</p>
+                <img src="/images/hydricalclogo.jpg" height="150px" alt="">
+                <h3>Хидорокалкулатор формула</h3>
             </div>
         </a>
     </section>

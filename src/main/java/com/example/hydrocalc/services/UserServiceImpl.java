@@ -1,7 +1,7 @@
 package com.example.hydrocalc.services;
 
-import com.example.hydrocalc.model.UserEntity;
-import com.example.hydrocalc.model.UserRoleEntity;
+import com.example.hydrocalc.model.entities.UserEntity;
+import com.example.hydrocalc.model.entities.UserRoleEntity;
 import com.example.hydrocalc.repositrory.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

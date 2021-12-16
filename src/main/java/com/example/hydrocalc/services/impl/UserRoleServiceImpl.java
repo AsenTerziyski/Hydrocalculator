@@ -1,6 +1,6 @@
 package com.example.hydrocalc.services.impl;
 
-import com.example.hydrocalc.model.UserRoleEntity;
+import com.example.hydrocalc.model.entities.UserRoleEntity;
 import com.example.hydrocalc.model.enums.UserRoleEnum;
 import com.example.hydrocalc.repositrory.UserRoleRepository;
 import com.example.hydrocalc.services.UserRoleService;
