@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head"></head>
+
+<body class="bg-dark">
+<header th:replace="fragments/commons::nav"></header>
+
+<main role="main" class="bg-dark">
+
+    <div class="container align-content-center bg-dark p-2 mt-3">
+
+        <div class="card-text bg-dark text-red align-content-center m-sm-auto text-warning"><span
+                th:text="|*{availableDiametersForPvcOPipes}. Опитай с друг диаметър или налягане!|"></span>
+        </div>
+
+    </div>
+
+    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5 border-warning"
+       href="/calc-pipe-PE"
+       role="button">ИЗЧИСЛИ ОТНОВО</a>
+
+    <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-5 border-info" href="/"
+       role="button">НАЧАЛНА СТРАНИЦА</a>
+
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>

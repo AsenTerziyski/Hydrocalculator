@@ -10,6 +10,7 @@ public class UserEntity extends BaseEntity {
     private String username;
     private String password;
     private String fullName;
+    private List<CalculatorPipeResults> results;
 
     private List<UserRoleEntity> roles;
 
@@ -54,5 +55,13 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    public List<CalculatorPipeResults> getResults() {
+        return results;
+    }
 
+    public UserEntity setResults(List<CalculatorPipeResults> results) {
+        this.results = results;
+        return this;
+    }
 }

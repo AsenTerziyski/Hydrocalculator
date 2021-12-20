@@ -1,10 +1,15 @@
 package com.example.hydrocalc.model.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class CalculatorPipeResults extends BaseEntity {
-
 
     private double flowInLitersPerSecond;
     private String pipeNominalDiameter;
@@ -15,6 +20,12 @@ public class CalculatorPipeResults extends BaseEntity {
     private double roughnessHeightInMm;
     private double lossesPerMeter;
     private double totalLosses;
+    private String createdOn;
+    private boolean velocityHigh;
+    private boolean velocityLow;
+    private String material;
+    private UserEntity user;
+
 
 
     public double getFlowInLitersPerSecond() {
@@ -98,4 +109,49 @@ public class CalculatorPipeResults extends BaseEntity {
         return this;
     }
 
+    public String getCreatedOn() {
+        return createdOn;
+    }
+
+    public CalculatorPipeResults setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    public boolean isVelocityHigh() {
+        return velocityHigh;
+    }
+
+    public CalculatorPipeResults setVelocityHigh(boolean velocityHigh) {
+        this.velocityHigh = velocityHigh;
+        return this;
+    }
+
+    public boolean isVelocityLow() {
+        return velocityLow;
+    }
+
+    public CalculatorPipeResults setVelocityLow(boolean velocityLow) {
+        this.velocityLow = velocityLow;
+        return this;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public CalculatorPipeResults setMaterial(String material) {
+        this.material = material;
+        return this;
+    }
+
+    @ManyToOne
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public CalculatorPipeResults setUser(UserEntity user) {
+        this.user = user;
+        return this;
+    }
 }

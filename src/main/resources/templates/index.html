@@ -38,11 +38,10 @@
     <!--     Boxes Section-->
     <section class="boxes mt-1 mb-5">
 
-        <a href="/" class="main-btn bg-dark text-info" sec:authorize="isAuthenticated()">
+        <a th:href="@{/my-calculations}"  class="main-btn bg-dark text-info" sec:authorize="isAuthenticated()">
             <div class="box bg-dark">
                 <img src="/images/hydricalclogo.jpg" height="150px" alt="">
                 <h3>Моите изчисления</h3>
-                <p>История</p>
             </div>
         </a>
         <a href="/" class="main-btn bg-dark text-info" sec:authorize="!isAuthenticated()">

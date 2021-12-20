@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class UserRoleEntity extends BaseEntity {
     private UserRoleEnum role;
 
+
     public UserRoleEntity() {
     }
 
@@ -24,4 +25,5 @@ public class UserRoleEntity extends BaseEntity {
         this.role = role;
         return this;
     }
+
 }

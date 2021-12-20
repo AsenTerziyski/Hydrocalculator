@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head"></head>
+
+<body class="bg-dark">
+<header th:replace="fragments/commons::nav"></header>
+
+<main role="main" class="bg-dark">
+
+    <div th:each="mc : ${myCalculations}" th:object="${mc}" class="container align-content-center bg-dark p-2 mt-0">
+        <div class="row align-content-center bg-dark">
+            <li class="list-group-item bg-dark text-warning">
+                <!--                <div class="card-text bg-dark text-info"><span th:text="|Offer posted by: *{addedBy}|">Posted by</span></div>-->
+                <div class="card-text bg-dark text-red align-content-center"><span
+                        th:text="|FLOW: *{flowInLitersPerSecond} l/s:|">RoomType</span></div><br>
+<!--                <div class="card-text bg-dark text-info"><span-->
+<!--                        th:text="|If you book for more than: *{stay} days,-->
+<!--                        you get a discount of *{#numbers.formatDecimal(discount, 1, 0)}% from the total sum.|">Discount</span>-->
+<!--                </div>-->
+<!--                <div class="card-text bg-dark text-info"><span th:text="|If you have more than 3 bookings in our hotel so far,-->
+<!--                 you become a vip customer and no matter how long you will stay, you get a discount of *{#numbers.formatDecimal(vipDiscount, 1,0)}% from the total sum.|">vip Discount</span>-->
+<!--                </div><br>-->
+<!--                <div class="card-text bg-dark text-info"><span-->
+<!--                        th:text="|Additionl notes:|">description</span></div>-->
+<!--                <div class="card-text bg-dark text-info"><span-->
+<!--                        th:text="|*{description}|">description</span></div>-->
+            </li>
+        </div>
+    </div>
+
+
+<!--    <div th:object="${myCalculations}" class="container align-content-center bg-dark p-2 mt-3">-->
+<!--        <div class="row align-content-center bg-dark">-->
+<!--            <li class="list-group-item bg-dark text-warning">-->
+<!--                <h6>-->
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="${myCalculations}">di</span>-->
+<!--                    </div>-->
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="| Вътрешен диаметър: DI = *{#numbers.formatDecimal(pipeInternalDiameter,1,2)}mm;|">di</span>-->
+<!--                    </div>-->
+<!--                    -->
+<!--                    <br>-->
+
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="| Грапавина: k = *{#numbers.formatDecimal(roughnessHeightInMm,1,2)}mm;|">грапавина</span>-->
+<!--                    </div>-->
+<!--                    <br>-->
+
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="| Дължина на тръбопровода: L = *{#numbers.formatDecimal(pipeTotalLength,1,2)}m;|">дължина</span>-->
+<!--                    </div>-->
+<!--                    <br>-->
+
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="| Водно количество: Q = *{#numbers.formatDecimal(flowInLitersPerSecond,1,2)}l/s;|">водно количество</span>-->
+<!--                    </div>-->
+<!--                    <br>-->
+
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="| Скорост: V = *{#numbers.formatDecimal(velocityInMetersPerSecond,1,2)}m/s;|">скорост</span>-->
+<!--                    </div>-->
+<!--                    <br>-->
+
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="| Хидравличен наклон: i = *{#numbers.formatDecimal(lossesPerMeter,1,5)}m/m;|">хидравличен наклон</span>-->
+<!--                    </div>-->
+<!--                    <br>-->
+
+<!--                    <div class="card-text bg-dark text-red align-content-center"><span-->
+<!--                            th:text="| Общо загуби на напор: H = *{#numbers.formatDecimal(totalLosses,1,2)}m.|">общо загуби</span>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                    <br>&ndash;&gt;-->
+<!--                </h6>-->
+<!--            </li>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5 border-warning"
+       href="/calc-pipe-DI"
+       role="button">ИЗЧИСЛИ ОТНОВО</a>
+
+    <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-5 border-info" href="/"
+       role="button">НАЧАЛНА СТРАНИЦА</a>
+
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>

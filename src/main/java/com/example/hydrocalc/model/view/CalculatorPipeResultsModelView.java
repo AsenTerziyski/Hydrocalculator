@@ -10,6 +10,8 @@ public class CalculatorPipeResultsModelView {
     private double roughnessHeightInMm;
     private double lossesPerMeter;
     private double totalLosses;
+    private boolean velocityHigh;
+    private boolean velocityLow;
 
     public double getFlowInLitersPerSecond() {
         return flowInLitersPerSecond;
@@ -89,6 +91,24 @@ public class CalculatorPipeResultsModelView {
 
     public CalculatorPipeResultsModelView setTotalLosses(double totalLosses) {
         this.totalLosses = totalLosses;
+        return this;
+    }
+
+    public boolean isVelocityHigh() {
+        return velocityHigh;
+    }
+
+    public CalculatorPipeResultsModelView setVelocityHigh(boolean velocityHigh) {
+        this.velocityHigh = velocityHigh;
+        return this;
+    }
+
+    public boolean isVelocityLow() {
+        return velocityLow;
+    }
+
+    public CalculatorPipeResultsModelView setVelocityLow(boolean velocityLow) {
+        this.velocityLow = velocityLow;
         return this;
     }
 }

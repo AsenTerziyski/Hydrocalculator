@@ -5,6 +5,7 @@ import com.example.hydrocalc.services.UserRoleService;
 import com.example.hydrocalc.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class InitData implements CommandLineRunner {
@@ -34,7 +35,7 @@ public class InitData implements CommandLineRunner {
 //        this.calcPipeResultService.addNewResult(res);
         this.userRoleService.initUserRoles();
         this.userService.initUsers();
-        System.out.println("hello java");
+        System.out.println("HELLO HYDRO :)");
 
     }
 }
