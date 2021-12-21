@@ -5,8 +5,6 @@ import com.example.hydrocalc.model.entities.CalculatorPipeResults;
 
 
 public class HydroCalculator {
-    private static final double VELOCITY_HIGH = 3.00;
-    private static final double VELOCITY_LOW = 0.6;
 
     public static CalculatorPipeResults calculatePipe(double internalDiameter, double flow, double roughnessHeightInMm, double pipeLength) {
 
@@ -19,18 +17,19 @@ public class HydroCalculator {
         double roughnessHeightInMeters = roughnessHeightInMm / 1000;
         double rNumber = internalDiameterInMeters * velocityInMeterPerSecond / kinematicViscosity;
 
-        double intermediateVariable = Math.log10(roughnessHeightInMeters/(3.7*internalDiameterInMeters) + 5.74/Math.pow(rNumber,0.9));
-        double frictionFactor = 0.25/Math.pow(intermediateVariable,2);
-        double lossesPerMeter = (frictionFactor/internalDiameterInMeters)*velocityInMeterPerSecond*velocityInMeterPerSecond/(2*9.81);
+        double intermediateVariable = Math.log10(roughnessHeightInMeters / (3.7 * internalDiameterInMeters) + 5.74 / Math.pow(rNumber, 0.9));
+        double frictionFactor = 0.25 / Math.pow(intermediateVariable, 2);
+        double lossesPerMeter = (frictionFactor / internalDiameterInMeters) * velocityInMeterPerSecond * velocityInMeterPerSecond / (2 * CalculatorConstants.GRAVITY_CONSTANT);
 
         CalculatorPipeResults calculatorPipeResults = new CalculatorPipeResults();
-        if (velocityInMeterPerSecond >= VELOCITY_HIGH) {
+
+        if (velocityInMeterPerSecond >= CalculatorConstants.VELOCITY_HIGH) {
             calculatorPipeResults.setVelocityHigh(true);
         } else {
             calculatorPipeResults.setVelocityHigh(false);
         }
 
-        if (velocityInMeterPerSecond<=VELOCITY_LOW) {
+        if (velocityInMeterPerSecond <= CalculatorConstants.VELOCITY_LOW) {
             calculatorPipeResults.setVelocityLow(true);
         } else {
             calculatorPipeResults.setVelocityLow(false);

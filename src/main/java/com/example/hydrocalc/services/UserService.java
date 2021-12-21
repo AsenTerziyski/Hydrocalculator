@@ -13,4 +13,7 @@ public interface UserService {
     UserEntity findUserByUsername(String username);
 
     List<CalculatorPipeResultsModelView> findMyCalculations(Principal principal);
+
+
+    boolean userIsAdmin(UserEntity caller);
 }

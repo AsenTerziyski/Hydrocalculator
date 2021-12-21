@@ -21,6 +21,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class CalcPipeResultServiceImpl implements CalcPipeResultService {
@@ -167,6 +168,30 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
             return String.format("Не са налични тръби %s-O за %s", pipeMaterial, nominalPressure.name());
         }
         return format + output.substring(0, output.length() - 2).trim();
+    }
+
+    @Override
+    public boolean removeCalculation(Long id) {
+        CalculatorPipeResults calculatorPipeResults = this.calculatorPipeResultRepository.findById(id).orElse(null);
+        if (calculatorPipeResults != null) {
+            this.calculatorPipeResultRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isOwnerOrAdmin(Principal principal, Long id) {
+        String username = principal.getName();
+        UserEntity caller = this.userService.findUserByUsername(username);
+        Optional<CalculatorPipeResults> byId = this.calculatorPipeResultRepository.findById(id);
+        if (byId.isEmpty() || caller == null) {
+            return false;
+        } else {
+            UserEntity userWhoDidTheCalculation = byId.get().getUser();
+            boolean isAdmin = this.userService.userIsAdmin(caller);
+            return isAdmin || userWhoDidTheCalculation.getUsername().equalsIgnoreCase(username);
+        }
     }
 
     private void setDnAndPnOfPvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel, CalculatorPipeResults pvcOPipeResults) {

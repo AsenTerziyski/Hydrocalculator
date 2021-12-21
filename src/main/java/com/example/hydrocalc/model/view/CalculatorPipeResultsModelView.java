@@ -1,6 +1,7 @@
 package com.example.hydrocalc.model.view;
 
 public class CalculatorPipeResultsModelView {
+    private Long id;
     private double flowInLitersPerSecond;
     private String pipeNominalDiameter;
     private double pipeInternalDiameter;
@@ -12,6 +13,17 @@ public class CalculatorPipeResultsModelView {
     private double totalLosses;
     private boolean velocityHigh;
     private boolean velocityLow;
+    private boolean canDelete;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public CalculatorPipeResultsModelView setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public double getFlowInLitersPerSecond() {
         return flowInLitersPerSecond;
@@ -111,4 +123,15 @@ public class CalculatorPipeResultsModelView {
         this.velocityLow = velocityLow;
         return this;
     }
+
+    public boolean isCanDelete() {
+        return canDelete;
+    }
+
+    public CalculatorPipeResultsModelView setCanDelete(boolean canDelete) {
+        this.canDelete = canDelete;
+        return this;
+    }
+
+
 }

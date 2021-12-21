@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface CalculatorPipeResultRepository extends JpaRepository<CalculatorPipeResults, Long> {
     List<CalculatorPipeResults> findAllByUser(UserEntity user);
+    CalculatorPipeResults findByUser(UserEntity user);
 }
