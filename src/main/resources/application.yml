@@ -6,7 +6,7 @@
 #    driverClassName: com.mysql.cj.jdbc.Driver
 #    url: "jdbc:mysql://localhost:3306/androriaDB?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
 #    username: root
-#    password: M@lmsuite3996
+#    password: 
 #
 #  servlet:
 #    multipart:
@@ -75,7 +75,7 @@ server.port: ${PORT:8080}
 #Cloudinary Properties
 #cloudinary:
 #  api-key: 988518893397762
-#  api-secret: SUB88toISb43xWxObTZav4-DQOw
+#  api-secret: 
 #  cloud-name: malmsuite
 
 #schedulers:
@@ -99,7 +99,7 @@ server.port: ${PORT:8080}
 #    driverClassName: com.mysql.cj.jdbc.Driver
 #    url: "jdbc:mysql://localhost:3306/hydrocalcDB?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
 #    username: root
-#    password: M@lmsuite3996
+#    password: 
 #
 #  servlet:
 #    multipart:
