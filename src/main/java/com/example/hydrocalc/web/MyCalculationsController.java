@@ -47,7 +47,6 @@ public class MyCalculationsController {
             boolean removed = this.calcPipeResultService.removeCalculation(id);
         } else {
             //todo
-
         }
         return "redirect:/my-calculations";
     }

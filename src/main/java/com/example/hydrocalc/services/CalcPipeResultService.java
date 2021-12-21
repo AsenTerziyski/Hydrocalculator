@@ -19,9 +19,9 @@ public interface CalcPipeResultService {
 
     CalculatorPipeResultsModelView findResultById(Long savedResult);
 
-    Long calculatePePipe(PePipeBindingModel pePipeBindingModel);
+    Long calculatePePipe(PePipeBindingModel pePipeBindingModel, String username);
 
-    Long calculatePvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel);
+    Long calculatePvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel, String username);
 
     String getAvailableDiametersForPePipes(NominalPressure nominalPressure);
 

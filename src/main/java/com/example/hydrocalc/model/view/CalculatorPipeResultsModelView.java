@@ -14,6 +14,7 @@ public class CalculatorPipeResultsModelView {
     private boolean velocityHigh;
     private boolean velocityLow;
     private boolean canDelete;
+    private String createdOn;
 
 
     public Long getId() {
@@ -133,5 +134,12 @@ public class CalculatorPipeResultsModelView {
         return this;
     }
 
+    public String getCreatedOn() {
+        return createdOn;
+    }
 
+    public CalculatorPipeResultsModelView setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
 }

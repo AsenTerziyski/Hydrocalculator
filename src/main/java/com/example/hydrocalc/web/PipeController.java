@@ -59,7 +59,6 @@ public class PipeController {
                             pipeDIBindingModel);
             return "pipe-ID-input";
         }
-        System.out.println();
         Long savedResult = -1L;
         if (principal != null) {
             savedResult = this.calcPipeResultService.calculateByInternalDiameter(pipeDIBindingModel, principal.getName());
@@ -94,7 +93,7 @@ public class PipeController {
     public String postPePipeInput(@Valid PePipeBindingModel pePipeBindingModel,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes,
-                                  Model model) {
+                                  Model model, Principal principal) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
@@ -104,7 +103,13 @@ public class PipeController {
             return "pipe-PE-input";
         }
 
-        Long savedResultId = this.calcPipeResultService.calculatePePipe(pePipeBindingModel);
+        Long savedResultId = -1L;
+        if (principal != null) {
+            savedResultId = this.calcPipeResultService.calculatePePipe(pePipeBindingModel, principal.getName());
+        } else {
+            savedResultId = this.calcPipeResultService.calculatePePipe(pePipeBindingModel, null);
+        }
+
         if (savedResultId < 0L) {
             model.addAttribute("availableDiametersForNominalPressure",
                     this.calcPipeResultService
@@ -132,17 +137,22 @@ public class PipeController {
     public String postPvcOPipeInput(@Valid PvcOPipeBindingModel pvcOPipeBindingModel,
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes,
-                                    Model model) {
+                                    Model model, Principal principal) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
-                    .addFlashAttribute("pePipeBindingModel", pvcOPipeBindingModel)
+                    .addFlashAttribute("pvcOPipeBindingModel", pvcOPipeBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.pvcOPipeBindingModel",
                             pvcOPipeBindingModel);
             return "pipe-PVC-O-input";
         }
 
-        Long savedResultId = this.calcPipeResultService.calculatePvcOPipe(pvcOPipeBindingModel);
+        Long savedResultId = -1L;
+        if (principal != null) {
+            savedResultId = this.calcPipeResultService.calculatePvcOPipe(pvcOPipeBindingModel, principal.getName());
+        } else {
+            savedResultId = this.calcPipeResultService.calculatePvcOPipe(pvcOPipeBindingModel, principal.getName());
+        }
 
         if (savedResultId < 0L) {
             String availableDiametersForPvcOPipes = this.calcPipeResultService.getAvailableDiametersForPvcOPipes(pvcOPipeBindingModel.getNominalPressure());

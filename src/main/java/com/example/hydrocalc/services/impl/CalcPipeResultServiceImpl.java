@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -47,9 +46,10 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         double flowInLitersPerSeconds = inputByInternalDiameter.getFlowInLitersPerSeconds();
         double length = inputByInternalDiameter.getLength();
         double roughnessHeightInMm = inputByInternalDiameter.getRoughnessHeightInMm();
-        System.out.println();
         CalculatorPipeResults calculatorPipeResults = HydroCalculator.calculatePipe(di, flowInLitersPerSeconds, roughnessHeightInMm, length);
         UserEntity userByUsername = this.userService.findUserByUsername(username);
+        calculatorPipeResults.setCreatedOn(getPostedOnNow());
+        calculatorPipeResults.setMaterial("N/A");
         calculatorPipeResults.setUser(userByUsername);
         return this.calculatorPipeResultRepository.save(calculatorPipeResults).getId();
     }
@@ -64,7 +64,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     }
 
     @Override
-    public Long calculatePePipe(PePipeBindingModel pePipeBindingModel) {
+    public Long calculatePePipe(PePipeBindingModel pePipeBindingModel, String username) {
         double internalDiameter = getPePipeInternalDiameter(pePipeBindingModel);
         NominalPressure nominalPressure = pePipeBindingModel.getNominalPressure();
         if (internalDiameter == 0) {
@@ -73,13 +73,15 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         CalculatorPipeResults pePipeResult = HydroCalculator.calculatePipe(internalDiameter, pePipeBindingModel.getFlowInLitersPerSeconds(),
                 pePipeBindingModel.getRoughnessHeightInMm(), pePipeBindingModel.getLength());
         setDnAndPn(pePipeBindingModel, pePipeResult);
-        pePipeResult.setCreatedOn(getPostedOn());
+        pePipeResult.setCreatedOn(getPostedOnNow());
         pePipeResult.setMaterial("Материал на тръбата: PE");
+        UserEntity userByUsername = this.userService.findUserByUsername(username);
+        pePipeResult.setUser(userByUsername);
         return this.calculatorPipeResultRepository.save(pePipeResult).getId();
     }
 
     @Override
-    public Long calculatePvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel) {
+    public Long calculatePvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel, String username) {
         double internalDiameter = getPvcOPipeInternalDiameter(pvcOPipeBindingModel);
         if (internalDiameter == 0) {
             return -1L;
@@ -87,8 +89,10 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         CalculatorPipeResults pvcOPipeResults = HydroCalculator.calculatePipe(internalDiameter, pvcOPipeBindingModel.getFlowInLitersPerSeconds(),
                 pvcOPipeBindingModel.getRoughnessHeightInMm(), pvcOPipeBindingModel.getLength());
         setDnAndPnOfPvcOPipe(pvcOPipeBindingModel, pvcOPipeResults);
-        pvcOPipeResults.setCreatedOn(getPostedOn());
+        pvcOPipeResults.setCreatedOn(getPostedOnNow());
         pvcOPipeResults.setMaterial("Материал на тръбата: PVC-O");
+        UserEntity userByUsername = this.userService.findUserByUsername(username);
+        pvcOPipeResults.setUser(userByUsername);
         return this.calculatorPipeResultRepository.save(pvcOPipeResults).getId();
     }
 
@@ -211,13 +215,13 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         return internalDiameter;
     }
 
-    private String getPostedOn() {
+    private String getPostedOnNow() {
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
         int minute = now.getMinute();
         int month = now.getMonth().getValue();
         int dayOfMonth = now.getDayOfMonth();
-        return "създаден на: " + dayOfMonth + "." + month + " във " + hour + ":" + minute + " часа.";
+        return "Създаден на: " + dayOfMonth + "." + month + " във " + hour + ":" + minute + " часа:";
     }
 
     private void setDnAndPn(PePipeBindingModel pePipeBindingModel, CalculatorPipeResults pePipeResult) {

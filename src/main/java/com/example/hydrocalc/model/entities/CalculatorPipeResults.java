@@ -11,7 +11,6 @@ import java.util.Date;
 @Entity
 public class CalculatorPipeResults extends BaseEntity {
 
-    private Long id;
     private double flowInLitersPerSecond;
     private String pipeNominalDiameter;
     private double pipeInternalDiameter;
@@ -155,4 +154,5 @@ public class CalculatorPipeResults extends BaseEntity {
         this.user = user;
         return this;
     }
+
 }
