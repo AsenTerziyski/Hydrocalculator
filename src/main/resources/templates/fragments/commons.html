@@ -30,15 +30,14 @@
                         <a sec:authorize="!isAuthenticated()" class="bg-info text-white" href="/">Home</a>
                     </li>
                     <li>
-                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" href="/">Register</a>
+                        <a sec:authorize="!isAuthenticated()" class="bg-info text-warning" th:href="@{/users/register}">РЕГИСТРИРАЙ СЕ</a>
                     </li>
                     <li>
-                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white"
-                           th:href="@{/users/login}">Login</a>
+                        <a sec:authorize="!isAuthenticated()" class="bg-info text-warning"
+                           th:href="@{/users/login}">ВХОД</a>
                     </li>
                     <li>
-                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" th:href="@{/calc-pipe-DI}">Calc
-                            by DI</a>
+                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" th:href="@{/calc-pipe-DI}">ПО ВЪТРЕШЕН ДИАМЕТЪР</a>
                     </li>
                 </th:block>
             </ul>

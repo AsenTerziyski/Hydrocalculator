@@ -1,5 +1,6 @@
 package com.example.hydrocalc.services;
 
+import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.model.entities.CalculatorPipeResults;
 import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
@@ -16,4 +17,6 @@ public interface UserService {
 
 
     boolean userIsAdmin(UserEntity caller);
+
+    boolean registerNewUserInHydrocalculator(UserRegisterBindingModel userRegisterBindingModel);
 }

@@ -4,7 +4,7 @@
 <body class="bg-dark">
 <header th:replace="fragments/commons::nav"></header>
 
-<main class="p-5 align-content-center bg-dark my-register-div">
+<main class="p-5 align-content-center bg-dark my-register-div text-warning">
 
     <div class="d-flex justify-content-center">
 
@@ -46,8 +46,8 @@
                 <p th:if="${bad_credentials}" class="errors alert alert-danger">
                     Invalid username or password.
                 </p>
-                <div class="d-flex justify-content-center mt-2">
-                    <button class="btn btn-primary btn-block w-50" type="submit">Login</button>
+                <div class="d-flex justify-content-center mt-4">
+                    <button class="btn btn-primary btn-block w-75 text-warning" type="submit">ВЛЕЗ!</button>
                 </div>
             </form>
 

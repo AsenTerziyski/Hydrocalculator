@@ -43,4 +43,13 @@ public class UserRoleServiceImpl implements UserRoleService {
     public List<UserRoleEntity> findAllRoles() {
         return this.userRoleRepository.findAll();
     }
+
+    @Override
+    public UserRoleEntity findRoleEntityByRole(UserRoleEnum user) {
+        UserRoleEntity byRole = this.userRoleRepository.findByRole(user);
+        if (byRole != null) {
+            return byRole;
+        }
+        return null;
+    }
 }

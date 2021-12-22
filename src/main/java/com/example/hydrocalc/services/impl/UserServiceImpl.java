@@ -1,15 +1,19 @@
 package com.example.hydrocalc.services.impl;
 
+import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.model.entities.CalculatorPipeResults;
 import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.model.entities.UserRoleEntity;
+import com.example.hydrocalc.model.enums.UserRoleEnum;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
-import com.example.hydrocalc.repositrory.CalculatorPipeResultRepository;
 import com.example.hydrocalc.repositrory.UserRepository;
-import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserRoleService;
 import com.example.hydrocalc.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +27,15 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
+    private final HydroCalcUserService hydroCalcUserService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, HydroCalcUserService hydroCalcUserService, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
+        this.hydroCalcUserService = hydroCalcUserService;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
     }
@@ -96,6 +102,25 @@ public class UserServiceImpl implements UserService {
                 .findFirst()
                 .orElse(null);
         return admin != null;
+    }
+
+    @Override
+    public boolean registerNewUserInHydrocalculator(UserRegisterBindingModel userRegisterBindingModel) {
+
+        Optional<UserEntity> byUsername = this.userRepository.findByUsername(userRegisterBindingModel.getUsername());
+        if (byUsername.isEmpty()) {
+            UserEntity newUser = this.modelMapper.map(userRegisterBindingModel, UserEntity.class);
+            newUser.setPassword(this.passwordEncoder.encode(userRegisterBindingModel.getPassword()));
+            UserRoleEntity userRole = this.userRoleService.findRoleEntityByRole(UserRoleEnum.USER);
+            newUser.setRoles(List.of(userRole));
+            this.userRepository.save(newUser);
+
+            UserDetails principal = hydroCalcUserService.loadUserByUsername(newUser.getUsername());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    principal, newUser.getPassword(), principal.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        return false;
     }
 
 
