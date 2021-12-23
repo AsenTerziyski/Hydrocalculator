@@ -2,6 +2,7 @@ package com.example.hydrocalc.model.binding;
 
 import com.example.hydrocalc.model.enums.NominalPressure;
 import com.example.hydrocalc.model.enums.PePipeEnum;
+import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ public class PePipeBindingModel {
     private double roughnessHeightInMm;
     private PePipeEnum pePipeEnum;
     private NominalPressure nominalPressure;
+    private WaterTemperatureEnum waterTemperature;
 
     @Positive
     public double getFlowInLitersPerSeconds() {
@@ -61,6 +63,16 @@ public class PePipeBindingModel {
 
     public PePipeBindingModel setNominalPressure(NominalPressure nominalPressure) {
         this.nominalPressure = nominalPressure;
+        return this;
+    }
+
+    @Enumerated
+    public WaterTemperatureEnum getWaterTemperature() {
+        return waterTemperature;
+    }
+
+    public PePipeBindingModel setWaterTemperature(WaterTemperatureEnum waterTemperature) {
+        this.waterTemperature = waterTemperature;
         return this;
     }
 }

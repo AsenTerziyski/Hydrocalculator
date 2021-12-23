@@ -43,6 +43,11 @@
                     <br>
 
                     <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| *{waterTemperature}|">температура на водата</span>
+                    </div>
+                    <br>
+
+                    <div class="card-text bg-dark text-red align-content-center"><span
                             th:text="| Скорост: V = *{#numbers.formatDecimal(velocityInMetersPerSecond,1,2)}m/s;|">скорост</span>
                     </div>
                     <br>

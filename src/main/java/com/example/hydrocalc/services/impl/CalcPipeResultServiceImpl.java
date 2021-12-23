@@ -1,5 +1,6 @@
 package com.example.hydrocalc.services.impl;
 
+import com.example.hydrocalc.calculator.CalculatorConstants;
 import com.example.hydrocalc.calculator.HydroCalculator;
 import com.example.hydrocalc.model.binding.PePipeBindingModel;
 import com.example.hydrocalc.model.binding.PvcOPipeBindingModel;
@@ -9,6 +10,7 @@ import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.model.enums.NominalPressure;
 import com.example.hydrocalc.model.enums.PePipeEnum;
 import com.example.hydrocalc.model.enums.PvcOPipeEnum;
+import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.repositrory.CalculatorPipeResultRepository;
 import com.example.hydrocalc.services.CalcPipeResultService;
@@ -46,7 +48,11 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         double flowInLitersPerSeconds = inputByInternalDiameter.getFlowInLitersPerSeconds();
         double length = inputByInternalDiameter.getLength();
         double roughnessHeightInMm = inputByInternalDiameter.getRoughnessHeightInMm();
-        CalculatorPipeResults calculatorPipeResults = HydroCalculator.calculatePipe(di, flowInLitersPerSeconds, roughnessHeightInMm, length);
+        WaterTemperatureEnum waterTemperature = inputByInternalDiameter.getWaterTemperature();
+        double kinematicViscosity = getKinematicViscosity(waterTemperature);
+        CalculatorPipeResults calculatorPipeResults = HydroCalculator.calculatePipe(di, flowInLitersPerSeconds, roughnessHeightInMm, length, kinematicViscosity);
+        setWaterTemperature(waterTemperature, calculatorPipeResults);
+
         UserEntity userByUsername = this.userService.findUserByUsername(username);
         calculatorPipeResults.setCreatedOn(getPostedOnNow());
         calculatorPipeResults.setMaterial("N/A");
@@ -70,8 +76,15 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         if (internalDiameter == 0) {
             return -1L;
         }
+
+        WaterTemperatureEnum waterTemperature = pePipeBindingModel.getWaterTemperature();
+
+
+        double kinematicViscosity = getKinematicViscosity(waterTemperature);
+
         CalculatorPipeResults pePipeResult = HydroCalculator.calculatePipe(internalDiameter, pePipeBindingModel.getFlowInLitersPerSeconds(),
-                pePipeBindingModel.getRoughnessHeightInMm(), pePipeBindingModel.getLength());
+                pePipeBindingModel.getRoughnessHeightInMm(), pePipeBindingModel.getLength(), kinematicViscosity);
+        setWaterTemperature(waterTemperature, pePipeResult);
         setDnAndPn(pePipeBindingModel, pePipeResult);
         pePipeResult.setCreatedOn(getPostedOnNow());
         pePipeResult.setMaterial("Материал на тръбата: PE");
@@ -80,14 +93,20 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         return this.calculatorPipeResultRepository.save(pePipeResult).getId();
     }
 
+
     @Override
     public Long calculatePvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel, String username) {
         double internalDiameter = getPvcOPipeInternalDiameter(pvcOPipeBindingModel);
         if (internalDiameter == 0) {
             return -1L;
         }
+
+        WaterTemperatureEnum waterTemperature = pvcOPipeBindingModel.getWaterTemperature();
+        double kinematicViscosity = getKinematicViscosity(waterTemperature);
+
         CalculatorPipeResults pvcOPipeResults = HydroCalculator.calculatePipe(internalDiameter, pvcOPipeBindingModel.getFlowInLitersPerSeconds(),
-                pvcOPipeBindingModel.getRoughnessHeightInMm(), pvcOPipeBindingModel.getLength());
+                pvcOPipeBindingModel.getRoughnessHeightInMm(), pvcOPipeBindingModel.getLength(), kinematicViscosity);
+        setWaterTemperature(waterTemperature, pvcOPipeResults);
         setDnAndPnOfPvcOPipe(pvcOPipeBindingModel, pvcOPipeResults);
         pvcOPipeResults.setCreatedOn(getPostedOnNow());
         pvcOPipeResults.setMaterial("Материал на тръбата: PVC-O");
@@ -221,7 +240,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         int minute = now.getMinute();
         int month = now.getMonth().getValue();
         int dayOfMonth = now.getDayOfMonth();
-        return "Създаден на: " + dayOfMonth + "." + month + " във " + hour + ":" + minute + " часа:";
+        return "Създаден на: " + dayOfMonth + "." + month;
     }
 
     private void setDnAndPn(PePipeBindingModel pePipeBindingModel, CalculatorPipeResults pePipeResult) {
@@ -245,6 +264,25 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
             internalDiameter = pePipeBindingModel.getPePipeEnum().getDinPN25();
         }
         return internalDiameter;
+    }
+
+    private double getKinematicViscosity(WaterTemperatureEnum waterTemperature) {
+        double kinematicViscosity;
+        if (waterTemperature == null) {
+            kinematicViscosity = 0;
+        } else {
+            kinematicViscosity = waterTemperature.getKinematicViscosity();
+        }
+        return kinematicViscosity;
+    }
+
+    private void setWaterTemperature(WaterTemperatureEnum waterTemperature, CalculatorPipeResults calculatorPipeResults) {
+        if (waterTemperature != null) {
+            String degreesCelsius = waterTemperature.name().substring(1);
+            calculatorPipeResults.setWaterTemperature("Температура на водата: " + degreesCelsius + CalculatorConstants.CELSIUS);
+        } else {
+            calculatorPipeResults.setWaterTemperature("Температура на водата: " + 10 + CalculatorConstants.CELSIUS);
+        }
     }
 
 }

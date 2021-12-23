@@ -15,7 +15,7 @@ public class CalculatorPipeResultsModelView {
     private boolean velocityLow;
     private boolean canDelete;
     private String createdOn;
-
+    private String waterTemperature;
 
     public Long getId() {
         return id;
@@ -140,6 +140,15 @@ public class CalculatorPipeResultsModelView {
 
     public CalculatorPipeResultsModelView setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
+        return this;
+    }
+
+    public String getWaterTemperature() {
+        return waterTemperature;
+    }
+
+    public CalculatorPipeResultsModelView setWaterTemperature(String waterTemperature) {
+        this.waterTemperature = waterTemperature;
         return this;
     }
 }

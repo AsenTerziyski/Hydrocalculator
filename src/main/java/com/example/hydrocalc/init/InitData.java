@@ -1,5 +1,6 @@
 package com.example.hydrocalc.init;
 
+import com.example.hydrocalc.calculator.CalculatorConstants;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserRoleService;
 import com.example.hydrocalc.services.UserService;
@@ -24,6 +25,7 @@ public class InitData implements CommandLineRunner {
         this.userRoleService.initUserRoles();
         this.userService.initUsers();
         System.out.println("HELLO HYDRO CALCULATOR :)");
+        System.out.println("C"+ (char) 176);
 
     }
 }

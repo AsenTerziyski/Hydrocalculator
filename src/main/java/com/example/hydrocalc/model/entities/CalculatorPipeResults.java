@@ -21,6 +21,7 @@ public class CalculatorPipeResults extends BaseEntity {
     private double lossesPerMeter;
     private double totalLosses;
     private String createdOn;
+    private String waterTemperature;
     private boolean velocityHigh;
     private boolean velocityLow;
     private String material;
@@ -155,4 +156,12 @@ public class CalculatorPipeResults extends BaseEntity {
         return this;
     }
 
+    public String getWaterTemperature() {
+        return waterTemperature;
+    }
+
+    public CalculatorPipeResults setWaterTemperature(String waterTemperature) {
+        this.waterTemperature = waterTemperature;
+        return this;
+    }
 }

@@ -5,19 +5,25 @@
 <body class="bg-dark">
 <header th:replace="fragments/commons::nav"></header>
 
-<main class="p-5 align-content-center bg-dark my-register-div">
-
+<main class="p-5 align-content-center bg-dark my-register-div text-warning ">
+    <h2 sec:authorize="isAuthenticated()">
+        <th:block sec:authentication="name"></th:block>
+        , ако си сигурен, че искаш да излезеш, кликни върху бутона!
+    </h2>
     <div class="d-flex justify-content-center">
-        <div class="row g-3 align-items-center">
+        <div class="row g-3 align-items-center mt-5">
             <section class="align-content-center">
                 <form sec:authorize="isAuthenticated()" th:action="@{/users/logout}" th:method="post">
-                    <input class="nav-link text-warning bg-info" type="submit" value="LOGOUT">
+                    <input class="nav-link text-warning text-uppercase bg-info" type="submit"
+                           value="Излез!">
                 </form>
             </section>
+            </br>
         </div>
     </div>
 
-    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5" href="/" role="button">BACK</a>
+    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5" href="/" role="button">НАЧАЛНА
+        СТРАНИЦА</a>
 
 </main>
 
