@@ -1,12 +1,11 @@
 package com.example.hydrocalc.init;
 
-import com.example.hydrocalc.calculator.CalculatorConstants;
+import com.example.hydrocalc.calculator.PipeCrossSectionAreaInSquareMeters;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserRoleService;
 import com.example.hydrocalc.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class InitData implements CommandLineRunner {
@@ -22,10 +21,13 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("HELLO HYDROCALCULATOR :)");
         this.userRoleService.initUserRoles();
         this.userService.initUsers();
-        System.out.println("HELLO HYDRO CALCULATOR :)");
-        System.out.println("C"+ (char) 176);
+        System.out.println("HELLO HYDROCALCULATOR initialised....");
+        PipeCrossSectionAreaInSquareMeters pipeCrossSectionArea = new PipeCrossSectionAreaInSquareMeters(20);
+        double crossSectionArea = pipeCrossSectionArea.getCrossSectionArea();
+        System.out.println(crossSectionArea);
 
     }
 }

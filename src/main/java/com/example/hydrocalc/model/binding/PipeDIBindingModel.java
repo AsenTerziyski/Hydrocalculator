@@ -4,13 +4,15 @@ import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+import java.util.Set;
 
 public class PipeDIBindingModel {
     private double flowInLitersPerSeconds;
     private double DI;
     private double length;
     private double roughnessHeightInMm;
-    private WaterTemperatureEnum waterTemperature;
+    private Set<String> temperatures;
 
     @Positive
     public double getFlowInLitersPerSeconds() {
@@ -52,13 +54,13 @@ public class PipeDIBindingModel {
         return this;
     }
 
-    @Enumerated
-    public WaterTemperatureEnum getWaterTemperature() {
-        return waterTemperature;
+    @Size(min = 1, max = 1)
+    public Set<String> getTemperatures() {
+        return temperatures;
     }
 
-    public PipeDIBindingModel setWaterTemperature(WaterTemperatureEnum waterTemperature) {
-        this.waterTemperature = waterTemperature;
+    public PipeDIBindingModel setTemperatures(Set<String> temperatures) {
+        this.temperatures = temperatures;
         return this;
     }
 }

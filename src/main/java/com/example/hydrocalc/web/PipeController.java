@@ -4,6 +4,7 @@ import com.example.hydrocalc.model.binding.PePipeBindingModel;
 import com.example.hydrocalc.model.binding.PipeDIBindingModel;
 import com.example.hydrocalc.model.binding.PvcOPipeBindingModel;
 import com.example.hydrocalc.model.entities.CalculatorPipeResults;
+import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserService;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class PipeController {
@@ -31,6 +33,8 @@ public class PipeController {
     @GetMapping("/calc-pipe-DI")
     public String getCalcPipeByDIPage(Model model) {
         addVelocityAttributesToModelIfTheyDoNotExist(model);
+        Set<String> temperatureSet = this.calcPipeResultService.getTemperatureSet();
+        model.addAttribute("waterTemperatures", temperatureSet);
         return "pipe-ID-input";
     }
 
@@ -52,6 +56,7 @@ public class PipeController {
     public String postPipeInputByDI(@Valid PipeDIBindingModel pipeDIBindingModel,
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes, Model model, Principal principal) {
+
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("pipeDIBindingModel", pipeDIBindingModel)
@@ -81,6 +86,8 @@ public class PipeController {
     @GetMapping("/calc-pipe-PE")
     public String getCalcPePipePage(Model model) {
         addVelocityAttributesToModelIfTheyDoNotExist(model);
+        Set<String> temperatureSet = this.calcPipeResultService.getTemperatureSet();
+        model.addAttribute("waterTemperatures", temperatureSet);
         return "pipe-PE-input";
     }
 
@@ -125,6 +132,8 @@ public class PipeController {
     @GetMapping("/calc-pipe-PVC-O")
     public String getCalcPvcOPipePage(Model model) {
         addVelocityAttributesToModelIfTheyDoNotExist(model);
+        Set<String> temperatureSet = this.calcPipeResultService.getTemperatureSet();
+        model.addAttribute("waterTemperatures", temperatureSet);
         return "pipe-PVC-O-input";
     }
 

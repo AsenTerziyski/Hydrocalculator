@@ -7,6 +7,8 @@ import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+import java.util.Set;
 
 public class PePipeBindingModel {
     private double flowInLitersPerSeconds;
@@ -15,6 +17,7 @@ public class PePipeBindingModel {
     private PePipeEnum pePipeEnum;
     private NominalPressure nominalPressure;
     private WaterTemperatureEnum waterTemperature;
+    private Set<String> temperatures;
 
     @Positive
     public double getFlowInLitersPerSeconds() {
@@ -73,6 +76,16 @@ public class PePipeBindingModel {
 
     public PePipeBindingModel setWaterTemperature(WaterTemperatureEnum waterTemperature) {
         this.waterTemperature = waterTemperature;
+        return this;
+    }
+
+    @Size(min = 1, max = 1)
+    public Set<String> getTemperatures() {
+        return temperatures;
+    }
+
+    public PePipeBindingModel setTemperatures(Set<String> temperatures) {
+        this.temperatures = temperatures;
         return this;
     }
 }

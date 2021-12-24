@@ -106,6 +106,50 @@
                 </div>
             </div>
 
+<!--            <div class="form-group row text-info">-->
+<!--                <label for="waterTemp" class="col-sm-2 col-form-label">Темп. на водата в градуси целзий</label>-->
+<!--                <div class="col-sm-10">-->
+<!--                    <select-->
+<!--                            th:field="*{waterTemperature}"-->
+<!--                            th:errorclass="is-invalid"-->
+<!--                            id="waterTemp" name="waterTemp" class="custom-select"-->
+<!--                            aria-describedby="categoryHelpInline">-->
+<!--                        <option value="" selected>Tемпература на водата</option>-->
+<!--                        <option-->
+<!--                                th:each="t:${T(com.example.hydrocalc.model.enums.WaterTemperatureEnum).values()}"-->
+<!--                                th:value="${t}"-->
+<!--                                th:text="${t}"-->
+<!--                                value="">T-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                    <small id="waterTempHelpInline" class="invalid-feedback bg-danger text-light rounded">-->
+<!--                        Избери температура на водата.-->
+<!--                    </small>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="form-group row text-info">
+                <label for="waterTemp" class="col-sm-2 col-form-label">Темп. на водата в градуси целзий</label>
+                <div class="col-sm-10">
+                    <select
+                            th:field="*{waterTemperature}"
+                            th:errorclass="is-invalid"
+                            id="waterTemp" name="waterTemp" class="custom-select"
+                            aria-describedby="categoryHelpInline">
+                        <option value="" selected>Tемпература на водата</option>
+                        <option
+                                th:each="t:${T(com.example.hydrocalc.model.enums.WaterTemperatureEnum).values()}"
+                                th:value="${t}"
+                                th:text="${t}"
+                                value="">T
+                        </option>
+                    </select>
+                    <small id="waterTempHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Избери температура на водата.
+                    </small>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-dark text-info bg-dark w-20 mb-5">ИЗЧИСЛИ</button>
 
         </form>

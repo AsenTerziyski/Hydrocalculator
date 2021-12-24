@@ -10,6 +10,7 @@ import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 public interface CalcPipeResultService {
 
@@ -29,6 +30,8 @@ public interface CalcPipeResultService {
 
     boolean removeCalculation(Long id);
 
-    boolean isOwnerOrAdmin (Principal principal, Long id);
+    boolean isOwnerOrAdmin(Principal principal, Long id);
+
+    Set<String> getTemperatureSet();
 
 }

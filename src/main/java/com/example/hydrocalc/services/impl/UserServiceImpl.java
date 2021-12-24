@@ -84,10 +84,10 @@ public class UserServiceImpl implements UserService {
             for (CalculatorPipeResults result : results) {
                 myResults.add(this.modelMapper.map(result, CalculatorPipeResultsModelView.class));
                 if (result.getPipeNominalDiameter() == null) {
-                    result.setPipeNominalDiameter("DN не е наличен.");
+                    result.setPipeNominalDiameter("DN не е наличен");
                 }
                 if(result.getNominalPressure() == null) {
-                    result.setNominalPressure("PN не е налично.");
+                    result.setNominalPressure("PN не е налично");
                 }
             }
         }

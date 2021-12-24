@@ -21,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CalcPipeResultServiceImpl implements CalcPipeResultService {
@@ -44,12 +46,27 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     @Override
     @Transactional
     public Long calculateByInternalDiameter(PipeDIBindingModel inputByInternalDiameter, String username) {
+        Set<String> temperatures = inputByInternalDiameter.getTemperatures();
+        WaterTemperatureEnum waterTemperature = null;
+        double kinematicViscosity = 0;
+        for (String rawInputTemperature : temperatures) {
+            String inputTemperature = rawInputTemperature.substring(0, 2);
+            WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+            for (WaterTemperatureEnum value : values) {
+                String enumTemperature = value.name().substring(1, 3);
+                if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
+                    kinematicViscosity = value.getKinematicViscosity();
+                    waterTemperature = value;
+                    break;
+                }
+            }
+        }
+
         double di = inputByInternalDiameter.getDI();
         double flowInLitersPerSeconds = inputByInternalDiameter.getFlowInLitersPerSeconds();
         double length = inputByInternalDiameter.getLength();
         double roughnessHeightInMm = inputByInternalDiameter.getRoughnessHeightInMm();
-        WaterTemperatureEnum waterTemperature = inputByInternalDiameter.getWaterTemperature();
-        double kinematicViscosity = getKinematicViscosity(waterTemperature);
+
         CalculatorPipeResults calculatorPipeResults = HydroCalculator.calculatePipe(di, flowInLitersPerSeconds, roughnessHeightInMm, length, kinematicViscosity);
         setWaterTemperature(waterTemperature, calculatorPipeResults);
 
@@ -61,15 +78,6 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     }
 
     @Override
-    public CalculatorPipeResultsModelView findResultById(Long savedResultId) {
-        CalculatorPipeResults savedResult = this.calculatorPipeResultRepository.findById(savedResultId).orElse(null);
-        if (savedResult != null) {
-            return this.modelMapper.map(savedResult, CalculatorPipeResultsModelView.class);
-        }
-        return null;
-    }
-
-    @Override
     public Long calculatePePipe(PePipeBindingModel pePipeBindingModel, String username) {
         double internalDiameter = getPePipeInternalDiameter(pePipeBindingModel);
         NominalPressure nominalPressure = pePipeBindingModel.getNominalPressure();
@@ -77,10 +85,21 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
             return -1L;
         }
 
-        WaterTemperatureEnum waterTemperature = pePipeBindingModel.getWaterTemperature();
-
-
-        double kinematicViscosity = getKinematicViscosity(waterTemperature);
+        Set<String> temperatures = pePipeBindingModel.getTemperatures();
+        WaterTemperatureEnum waterTemperature = null;
+        double kinematicViscosity = 0;
+        for (String rawInputTemperature : temperatures) {
+            String inputTemperature = rawInputTemperature.substring(0, 2);
+            WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+            for (WaterTemperatureEnum value : values) {
+                String enumTemperature = value.name().substring(1, 3);
+                if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
+                    kinematicViscosity = value.getKinematicViscosity();
+                    waterTemperature = value;
+                    break;
+                }
+            }
+        }
 
         CalculatorPipeResults pePipeResult = HydroCalculator.calculatePipe(internalDiameter, pePipeBindingModel.getFlowInLitersPerSeconds(),
                 pePipeBindingModel.getRoughnessHeightInMm(), pePipeBindingModel.getLength(), kinematicViscosity);
@@ -101,8 +120,21 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
             return -1L;
         }
 
-        WaterTemperatureEnum waterTemperature = pvcOPipeBindingModel.getWaterTemperature();
-        double kinematicViscosity = getKinematicViscosity(waterTemperature);
+        Set<String> temperatures = pvcOPipeBindingModel.getTemperatures();
+        WaterTemperatureEnum waterTemperature = null;
+        double kinematicViscosity = 0;
+        for (String rawInputTemperature : temperatures) {
+            String inputTemperature = rawInputTemperature.substring(0, 2);
+            WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+            for (WaterTemperatureEnum value : values) {
+                String enumTemperature = value.name().substring(1, 3);
+                if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
+                    kinematicViscosity = value.getKinematicViscosity();
+                    waterTemperature = value;
+                    break;
+                }
+            }
+        }
 
         CalculatorPipeResults pvcOPipeResults = HydroCalculator.calculatePipe(internalDiameter, pvcOPipeBindingModel.getFlowInLitersPerSeconds(),
                 pvcOPipeBindingModel.getRoughnessHeightInMm(), pvcOPipeBindingModel.getLength(), kinematicViscosity);
@@ -215,6 +247,26 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
             boolean isAdmin = this.userService.userIsAdmin(caller);
             return isAdmin || userWhoDidTheCalculation.getUsername().equalsIgnoreCase(username);
         }
+    }
+
+    @Override
+    public Set<String> getTemperatureSet() {
+        Set<String> temperatures = new LinkedHashSet<>();
+        WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+        for (WaterTemperatureEnum value : values) {
+            String waterTemp = value.name().substring(1) + CalculatorConstants.CELSIUS;
+            temperatures.add(waterTemp);
+        }
+        return temperatures;
+    }
+
+    @Override
+    public CalculatorPipeResultsModelView findResultById(Long savedResultId) {
+        CalculatorPipeResults savedResult = this.calculatorPipeResultRepository.findById(savedResultId).orElse(null);
+        if (savedResult != null) {
+            return this.modelMapper.map(savedResult, CalculatorPipeResultsModelView.class);
+        }
+        return null;
     }
 
     private void setDnAndPnOfPvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel, CalculatorPipeResults pvcOPipeResults) {

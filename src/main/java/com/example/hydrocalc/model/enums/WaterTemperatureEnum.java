@@ -1,5 +1,7 @@
 package com.example.hydrocalc.model.enums;
 
+import com.example.hydrocalc.calculator.CalculatorConstants;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ public enum WaterTemperatureEnum {
     C50(0.5531 * Math.pow(10, -6)),
     C60(0.4740 * Math.pow(10, -6)),
     C70(0.4127 * Math.pow(10, -6));
+
 
 
     private double kinematicViscosity;
