@@ -52,4 +52,10 @@ public class UserRoleServiceImpl implements UserRoleService {
         }
         return null;
     }
+
+    @Override
+    public UserRoleEntity findRoleByRoleEnum(UserRoleEnum userRoleEnum) {
+        UserRoleEntity byRole = this.userRoleRepository.findByRole(userRoleEnum);
+        return byRole;
+    }
 }

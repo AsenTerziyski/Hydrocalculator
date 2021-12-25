@@ -66,20 +66,18 @@
         </div>
     </div>
 
-    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5 border-warning"
+    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-3 border border-warning"
        href="/calc-pipe-DI"
        role="button">ИЗЧИСЛИ ОТНОВО</a>
 
     <th:block sec:authorize="isAuthenticated()">
-        <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-5 border-info"
+        <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning"
            th:href="@{/my-calculations}"
            role="button">КЪМ МОИТЕ ИЗЧИСЛЕНИЯ</a>
     </th:block>
 
-
-    <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-5 border-info" href="/"
+    <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning" href="/"
        role="button">КЪМ НАЧАЛНА СТРАНИЦА</a>
-
 
 </main>
 <footer th:replace="fragments/commons::footer"></footer>

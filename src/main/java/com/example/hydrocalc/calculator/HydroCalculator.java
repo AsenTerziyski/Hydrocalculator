@@ -42,7 +42,6 @@ public class HydroCalculator {
         } else {
             calculatorPipeResults.setVelocityHigh(false);
         }
-
         if (velocityInMeterPerSecond <= CalculatorConstants.VELOCITY_LOW) {
             calculatorPipeResults.setVelocityLow(true);
         } else {

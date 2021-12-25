@@ -11,4 +11,6 @@ public interface UserRoleService {
     List<UserRoleEntity> findAllRoles();
 
     UserRoleEntity findRoleEntityByRole(UserRoleEnum user);
+
+    UserRoleEntity findRoleByRoleEnum(UserRoleEnum userRoleEnum);
 }

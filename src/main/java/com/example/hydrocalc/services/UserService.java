@@ -3,6 +3,7 @@ package com.example.hydrocalc.services;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.model.entities.CalculatorPipeResults;
 import com.example.hydrocalc.model.entities.UserEntity;
+import com.example.hydrocalc.model.enums.UserRoleEnum;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 
 import java.security.Principal;
@@ -19,4 +20,7 @@ public interface UserService {
     boolean userIsAdmin(UserEntity caller);
 
     boolean registerNewUserInHydrocalculator(UserRegisterBindingModel userRegisterBindingModel);
+
+    boolean editUsersRoles(String username, UserRoleEnum userRoleEnum);
+
 }

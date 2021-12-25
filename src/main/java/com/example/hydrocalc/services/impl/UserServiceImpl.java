@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
                 if (result.getPipeNominalDiameter() == null) {
                     result.setPipeNominalDiameter("DN не е наличен");
                 }
-                if(result.getNominalPressure() == null) {
+                if (result.getNominalPressure() == null) {
                     result.setNominalPressure("PN не е налично");
                 }
             }
@@ -112,8 +112,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean registerNewUserInHydrocalculator(UserRegisterBindingModel userRegisterBindingModel) {
-
-        Optional<UserEntity> byUsername = this.userRepository.findByUsername(userRegisterBindingModel.getUsername());
+        Optional<UserEntity> byUsername = this.userRepository.findByUsernameIgnoreCase(userRegisterBindingModel.getUsername());
         if (byUsername.isEmpty()) {
             UserEntity newUser = this.modelMapper.map(userRegisterBindingModel, UserEntity.class);
             newUser.setPassword(this.passwordEncoder.encode(userRegisterBindingModel.getPassword()));
@@ -129,5 +128,21 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-
+    @Override
+    public boolean editUsersRoles(String username, UserRoleEnum userRoleEnum) {
+        Optional<UserEntity> byUsernameIgnoreCase = this.userRepository.findByUsernameIgnoreCase(username);
+        if (byUsernameIgnoreCase.isPresent()) {
+            if (userRoleEnum.name().equalsIgnoreCase("admin")) {
+                List<UserRoleEntity> allRoles = this.userRoleService.findAllRoles();
+                UserEntity userEntity = byUsernameIgnoreCase.get().setRoles(allRoles);
+                this.userRepository.save(userEntity);
+            } else {
+                UserRoleEntity roleByRoleEnum = this.userRoleService.findRoleByRoleEnum(userRoleEnum);
+                UserEntity userEntity = byUsernameIgnoreCase.get().setRoles(List.of(roleByRoleEnum));
+                this.userRepository.save(userEntity);
+            }
+            return true;
+        }
+        return false;
+    }
 }

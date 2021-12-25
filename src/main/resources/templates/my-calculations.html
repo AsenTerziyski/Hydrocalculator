@@ -8,12 +8,15 @@
 <header th:replace="fragments/commons::nav"></header>
 
 <main role="main" class="bg-dark">
+    <h6 class="text-warning">
+        <p>Забележка: Пазят се само последните 10 записа!</p>
+    </h6>
 
     <div th:each="mc : ${myCalculations}" th:object="${mc}" class="container align-content-center bg-dark p-2 mt-0">
         <div class="row align-content-center bg-dark">
             <li class="list-group-item bg-dark text-warning">
                 <div class="card-text bg-dark text-red align-content-center"><span
-                        th:text="| - *{createdOn}|"></span></div>
+                        th:text="|*{createdOn}.|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
                         th:text="| - Q = *{flowInLitersPerSecond} l/s;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
@@ -25,7 +28,7 @@
                 <div class="card-text bg-dark text-red align-content-center"><span
                         th:text="| - DI = *{pipeInternalDiameter};|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
-                        th:text="| - L = *{pipeTotalLength};|"></span></div>
+                        th:text="| - L = *{pipeTotalLength} m;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
                         th:text="| - V = *{velocityInMetersPerSecond} m/s;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
@@ -45,13 +48,9 @@
 
     </div>
 
-
-    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5 border-warning"
-       href="/calc-pipe-DI"
-       role="button">ИЗЧИСЛИ ОТНОВО</a>
-
-    <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-5 border-info" href="/"
-       role="button">НАЧАЛНА СТРАНИЦА</a>
+    <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning"
+       href="/"
+       role="button">КЪМ НАЧАЛНА СТРАНИЦА</a>
 
 </main>
 <footer th:replace="fragments/commons::footer"></footer>

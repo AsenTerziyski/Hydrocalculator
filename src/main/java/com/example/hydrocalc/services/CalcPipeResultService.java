@@ -14,7 +14,7 @@ import java.util.Set;
 
 public interface CalcPipeResultService {
 
-    void addNewResult(CalculatorPipeResults result);
+    Long addNewResult(CalculatorPipeResults result, String username);
 
     Long calculateByInternalDiameter(PipeDIBindingModel inputByInternalDiameter, String username);
 

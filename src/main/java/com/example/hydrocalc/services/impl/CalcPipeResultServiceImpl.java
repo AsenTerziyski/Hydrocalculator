@@ -16,15 +16,13 @@ import com.example.hydrocalc.repositrory.CalculatorPipeResultRepository;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CalcPipeResultServiceImpl implements CalcPipeResultService {
@@ -39,8 +37,38 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     }
 
     @Override
-    public void addNewResult(CalculatorPipeResults result) {
-        CalculatorPipeResults save = this.calculatorPipeResultRepository.save(result);
+    @Transactional
+    public Long addNewResult(CalculatorPipeResults result, String username) {
+        Long savedNewResultId = this.calculatorPipeResultRepository.save(result).getId();
+        UserEntity userByUsername = this.userService.findUserByUsername(username);
+        List<CalculatorPipeResults> allByUser = this.calculatorPipeResultRepository.findAllByUser(userByUsername);
+        if (allByUser.size() >= 5) {
+            for (int i = 0; i < allByUser.size(); i++) {
+                List<CalculatorPipeResults> reducedResults = this.calculatorPipeResultRepository.findAllByUser(userByUsername);
+                if (reducedResults.size() == 5) {
+                    break;
+                }
+                Long id = allByUser.get(i).getId();
+                this.calculatorPipeResultRepository.deleteById(id);
+            }
+        }
+
+//        if (username == null) {
+//            Long savedNewResultIdByAnonymous = this.calculatorPipeResultRepository.save(result).getId();
+//            List<CalculatorPipeResults> allByAnonymous = this.calculatorPipeResultRepository.findAllByUser(null);
+//            if (allByAnonymous.size() >= 5) {
+//                for (int i = 0; i < allByUser.size(); i++) {
+//                    List<CalculatorPipeResults> reducedResults = this.calculatorPipeResultRepository.findAllByUser(null);
+//                    if (reducedResults.size() == 5) {
+//                        break;
+//                    }
+//                    Long id = allByUser.get(i).getId();
+//                    this.calculatorPipeResultRepository.deleteById(id);
+//                }
+//            }
+//            return savedNewResultIdByAnonymous;
+//        }
+        return savedNewResultId;
     }
 
     @Override
@@ -74,7 +102,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         calculatorPipeResults.setCreatedOn(getPostedOnNow());
         calculatorPipeResults.setMaterial("N/A");
         calculatorPipeResults.setUser(userByUsername);
-        return this.calculatorPipeResultRepository.save(calculatorPipeResults).getId();
+        return addNewResult(calculatorPipeResults, username);
     }
 
     @Override
@@ -109,9 +137,8 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         pePipeResult.setMaterial("Материал на тръбата: PE");
         UserEntity userByUsername = this.userService.findUserByUsername(username);
         pePipeResult.setUser(userByUsername);
-        return this.calculatorPipeResultRepository.save(pePipeResult).getId();
+        return addNewResult(pePipeResult, username);
     }
-
 
     @Override
     public Long calculatePvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel, String username) {
@@ -144,7 +171,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         pvcOPipeResults.setMaterial("Материал на тръбата: PVC-O");
         UserEntity userByUsername = this.userService.findUserByUsername(username);
         pvcOPipeResults.setUser(userByUsername);
-        return this.calculatorPipeResultRepository.save(pvcOPipeResults).getId();
+        return addNewResult(pvcOPipeResults, username);
     }
 
     @Override
