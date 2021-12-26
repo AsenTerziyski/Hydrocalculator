@@ -105,6 +105,7 @@ public class PipeController {
                                   Model model, Principal principal) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("waterTemperatures", this.calcPipeResultService.getTemperatureSet());
             redirectAttributes
                     .addFlashAttribute("pePipeBindingModel", pePipeBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.pePipeBindingModel",
@@ -152,6 +153,7 @@ public class PipeController {
                                     Model model, Principal principal) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("waterTemperatures", this.calcPipeResultService.getTemperatureSet());
             redirectAttributes
                     .addFlashAttribute("pvcOPipeBindingModel", pvcOPipeBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.pvcOPipeBindingModel",

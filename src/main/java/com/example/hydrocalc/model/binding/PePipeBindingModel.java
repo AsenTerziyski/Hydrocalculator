@@ -50,6 +50,7 @@ public class PePipeBindingModel {
     }
 
     @Enumerated
+    @NotNull
     public PePipeEnum getPePipeEnum() {
         return pePipeEnum;
     }
@@ -60,6 +61,7 @@ public class PePipeBindingModel {
     }
 
     @Enumerated
+    @NotNull
     public NominalPressure getNominalPressure() {
         return nominalPressure;
     }

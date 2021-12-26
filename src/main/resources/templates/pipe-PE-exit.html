@@ -63,12 +63,13 @@
         </div>
     </div>
 
-    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5 border-warning"
-       href="/calc-pipe-PVC-O"
-       role="button">ИЗЧИСЛИ ОТНОВО</a>
+    <a th:replace="fragments/commons::calculateAgain"></a>
 
-    <a class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-5 border-info" href="/"
-       role="button">НАЧАЛНА СТРАНИЦА</a>
+    <th:block sec:authorize="isAuthenticated()">
+        <a th:replace="fragments/commons::toMyEquations"></a>
+    </th:block>
+
+    <a th:replace="fragments/commons::toHomePage"></a>
 
 </main>
 <footer th:replace="fragments/commons::footer"></footer>

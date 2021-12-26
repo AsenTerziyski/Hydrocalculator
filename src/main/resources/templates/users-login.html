@@ -15,7 +15,7 @@
                     method="post">
                 <div>
                     <div class="col-auto">
-                        <label for="inputUsername" class="col-form-label ">Username</label>
+                        <label for="inputUsername" class="col-form-label ">Потребителско име</label>
                     </div>
                     <div class="col-auto">
                         <input
@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <div class="col-auto">
-                        <label for="inputPassword" class="col-form-label ">Password</label>
+                        <label for="inputPassword" class="col-form-label ">Парола</label>
                     </div>
                     <div class="col-auto">
                         <input
@@ -56,10 +56,11 @@
 
     </div>
 
-    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5" href="/" role="button">BACK</a>
+    <a th:replace="fragments/commons::toHomePage"></a>
 
 </main>
 
 <footer th:replace="fragments/commons::footer"></footer>
+
 </body>
 </html>

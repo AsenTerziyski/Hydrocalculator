@@ -7,8 +7,8 @@
 
 <main class="p-5 align-content-center bg-dark my-register-div text-warning ">
     <h4 sec:authorize="isAuthenticated()">
-        <th:block sec:authentication="name"></th:block>
-        , ако си сигурен, че искаш да излезеш, кликни върху бутона!
+        <th:block sec:authentication="name"></th:block>, ако си сигурен, че искаш да излезеш, кликни върху бутона "ИЗЛЕЗ!"
+        или се върни на началната страница!
     </h4>
     <div class="d-flex justify-content-center">
         <div class="row g-3 align-items-center mt-5">
@@ -22,11 +22,12 @@
         </div>
     </div>
 
-    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-5" href="/" role="button">НАЧАЛНА
-        СТРАНИЦА</a>
+    <a th:replace="fragments/commons::toHomePage"></a>
 
 </main>
 
 <footer th:replace="fragments/commons::footer"></footer>
+
 </body>
+
 </html>

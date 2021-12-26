@@ -8,15 +8,24 @@
 <header th:replace="fragments/commons::nav"></header>
 
 <main role="main" class="bg-dark">
+
     <h6 class="text-warning">
-        <p>Забележка: Пазят се само последните 10 записа!</p>
+        <p>Пазят се последните 5 записа, но не по-стари от 30 дни!</p>
     </h6>
+
+    <th:block th:if="*{noCalculations}">
+        <h6 class="text-warning">
+            <p>Няма налични записи.</p>
+        </h6>
+    </th:block>
 
     <div th:each="mc : ${myCalculations}" th:object="${mc}" class="container align-content-center bg-dark p-2 mt-0">
         <div class="row align-content-center bg-dark">
             <li class="list-group-item bg-dark text-warning">
                 <div class="card-text bg-dark text-red align-content-center"><span
                         th:text="|*{createdOn}.|"></span></div>
+                <div class="card-text bg-dark text-red align-content-center"><span
+                        th:text="|*{material}|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
                         th:text="| - Q = *{flowInLitersPerSecond} l/s;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
@@ -30,13 +39,13 @@
                 <div class="card-text bg-dark text-red align-content-center"><span
                         th:text="| - L = *{pipeTotalLength} m;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
-                        th:text="| - V = *{velocityInMetersPerSecond} m/s;|"></span></div>
+                        th:text="| - V = *{#numbers.formatDecimal(velocityInMetersPerSecond,1,2)} m/s;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
                         th:text="| - k = *{roughnessHeightInMm} mm;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
-                        th:text="| - i = *{lossesPerMeter} m/m;|"></span></div>
+                        th:text="| - i = *{#numbers.formatDecimal(lossesPerMeter,1,4)} m/m;|"></span></div>
                 <div class="card-text bg-dark text-red align-content-center"><span
-                        th:text="| - Hзаг = *{totalLosses} m.|"></span></div>
+                        th:text="| - Hзаг = *{#numbers.formatDecimal(totalLosses,1,2)} m.|"></span></div>
             </li>
         </div>
 

@@ -7,10 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOError;
 import java.security.Principal;
@@ -27,16 +24,24 @@ public class MyCalculationsController {
         this.calcPipeResultService = calcPipeResultService;
     }
 
+
     @Transactional
     @GetMapping
     public String getMyCalculationsPage(Principal principal, Model model) {
         List<CalculatorPipeResultsModelView> myCalculations = this.userService.findMyCalculations(principal);
+
         for (CalculatorPipeResultsModelView myCalculation : myCalculations) {
             if (this.calcPipeResultService.isOwnerOrAdmin(principal, myCalculation.getId())) {
                 myCalculation.setCanDelete(true);
             }
         }
+        if (myCalculations.size()==0) {
+            model.addAttribute("noCalculations", true);
+        } else {
+            model.addAttribute("noCalculations", false);
+        }
         model.addAttribute("myCalculations", myCalculations);
+
         return "my-calculations";
     }
 

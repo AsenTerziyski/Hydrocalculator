@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -52,22 +53,6 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
                 this.calculatorPipeResultRepository.deleteById(id);
             }
         }
-
-//        if (username == null) {
-//            Long savedNewResultIdByAnonymous = this.calculatorPipeResultRepository.save(result).getId();
-//            List<CalculatorPipeResults> allByAnonymous = this.calculatorPipeResultRepository.findAllByUser(null);
-//            if (allByAnonymous.size() >= 5) {
-//                for (int i = 0; i < allByUser.size(); i++) {
-//                    List<CalculatorPipeResults> reducedResults = this.calculatorPipeResultRepository.findAllByUser(null);
-//                    if (reducedResults.size() == 5) {
-//                        break;
-//                    }
-//                    Long id = allByUser.get(i).getId();
-//                    this.calculatorPipeResultRepository.deleteById(id);
-//                }
-//            }
-//            return savedNewResultIdByAnonymous;
-//        }
         return savedNewResultId;
     }
 
@@ -96,19 +81,23 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         double roughnessHeightInMm = inputByInternalDiameter.getRoughnessHeightInMm();
 
         CalculatorPipeResults calculatorPipeResults = HydroCalculator.calculatePipe(di, flowInLitersPerSeconds, roughnessHeightInMm, length, kinematicViscosity);
+
         setWaterTemperature(waterTemperature, calculatorPipeResults);
 
         UserEntity userByUsername = this.userService.findUserByUsername(username);
-        calculatorPipeResults.setCreatedOn(getPostedOnNow());
-        calculatorPipeResults.setMaterial("N/A");
-        calculatorPipeResults.setUser(userByUsername);
+        calculatorPipeResults
+                .setCreatedOn(getPostedOnNow())
+                .setMaterial("Не е наличен материал на тръбата:")
+                .setNominalPressure("Не е налично PN")
+                .setPipeNominalDiameter("Не е наличен номинален диаметър").setUser(userByUsername);
         return addNewResult(calculatorPipeResults, username);
     }
 
     @Override
     public Long calculatePePipe(PePipeBindingModel pePipeBindingModel, String username) {
-        double internalDiameter = getPePipeInternalDiameter(pePipeBindingModel);
         NominalPressure nominalPressure = pePipeBindingModel.getNominalPressure();
+
+        double internalDiameter = getPePipeInternalDiameter(pePipeBindingModel);
         if (internalDiameter == 0) {
             return -1L;
         }
@@ -142,6 +131,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
 
     @Override
     public Long calculatePvcOPipe(PvcOPipeBindingModel pvcOPipeBindingModel, String username) {
+
         double internalDiameter = getPvcOPipeInternalDiameter(pvcOPipeBindingModel);
         if (internalDiameter == 0) {
             return -1L;
@@ -285,6 +275,25 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
             temperatures.add(waterTemp);
         }
         return temperatures;
+    }
+
+    @Override
+    public boolean delete30daysOldRecords() {
+        //todo
+//        LocalDate now = LocalDate.now();
+//        LocalDate testDate = LocalDate.of(2021, 12, 2);
+//        List<CalculatorPipeResults> allResults = this.calculatorPipeResultRepository.findAll();
+//        for (CalculatorPipeResults result : allResults) {
+////            if result.getInstanted....
+//            LocalDate thirtyDays = now.minusDays(30);
+//            if (thirtyDays.isBefore(testDate)) {
+//              .....
+//            }
+//
+//            return true;
+//        }
+//        return false;
+        return false;
     }
 
     @Override

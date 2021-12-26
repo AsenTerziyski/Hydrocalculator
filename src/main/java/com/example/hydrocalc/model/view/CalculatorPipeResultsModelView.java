@@ -2,6 +2,7 @@ package com.example.hydrocalc.model.view;
 
 public class CalculatorPipeResultsModelView {
     private Long id;
+    private String material;
     private double flowInLitersPerSecond;
     private String pipeNominalDiameter;
     private double pipeInternalDiameter;
@@ -23,6 +24,15 @@ public class CalculatorPipeResultsModelView {
 
     public CalculatorPipeResultsModelView setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public CalculatorPipeResultsModelView setMaterial(String material) {
+        this.material = material;
         return this;
     }
 

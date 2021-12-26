@@ -1,5 +1,6 @@
 package com.example.hydrocalc.init;
 
+import com.example.hydrocalc.calculator.DarcyWeisbachEquation;
 import com.example.hydrocalc.calculator.PipeCrossSectionAreaInSquareMeters;
 import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.model.entities.UserRoleEntity;
@@ -41,7 +42,5 @@ public class InitData implements CommandLineRunner {
         tuser11.getRoles().stream().forEach(userRoleEntity -> System.out.println(userRoleEntity.getRole().name()));
         System.out.println();
         System.out.println("HELLO HYDROCALCULATOR initialised....");
-
-
     }
 }

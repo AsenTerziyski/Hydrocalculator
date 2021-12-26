@@ -6,13 +6,11 @@
 <head th:replace="fragments/commons::head"></head>
 <body class="bg-dark">
 <div class="wrapper">
-
     <header th:replace="fragments/commons::nav"></header>
-
     <section class="top-container">
         <a th:fragment="welcome" class="site-header text-warning mb-0">
-            <h4 sec:authorize="!isAuthenticated()">ДОБРЕ ДОШЛИ В ХИДРОКАЛКУЛАТОР!</h4>
-            <h4 sec:authorize="isAuthenticated()">Добре дошъл,
+            <h4 sec:authorize="!isAuthenticated()">ДОБРЕ ДОШЪЛ В ХИДРОКАЛКУЛАТОР!</h4>
+            <h4 sec:authorize="isAuthenticated()">Здравей,
                 <th:block sec:authentication="name"></th:block>
                 !
             </h4>
@@ -33,11 +31,7 @@
             </div>
         </a>
     </section>
-
 </div>
-
 <footer th:replace="fragments/commons::footer"></footer>
-
 </body>
-
 </html>

@@ -15,7 +15,7 @@
                     th:method="POST">
                 <div>
                     <div class="col-auto">
-                        <label for="inputUsername" class="col-form-label ">Username</label>
+                        <label for="inputUsername" class="col-form-label ">Въведи потребителско име</label>
                     </div>
                     <div class="col-auto">
                         <input name="username"
@@ -36,7 +36,7 @@
 
                 <div>
                     <div class="col-auto">
-                        <label for="inputPassword" class="col-form-label ">Password</label>
+                        <label for="inputPassword" class="col-form-label ">Парола</label>
                     </div>
                     <div class="col-auto">
                         <input name="password"
@@ -54,7 +54,7 @@
 
                 <div>
                     <div class="col-auto">
-                        <label for="inputConfirmPassword" class="col-form-label ">Confirm Password</label>
+                        <label for="inputConfirmPassword" class="col-form-label ">Потвърди парола</label>
                     </div>
                     <div class="col-auto">
                         <input name="confirmPassword"
@@ -89,6 +89,9 @@
             </form>
         </div>
     </div>
+
+    <a th:replace="fragments/commons::toHomePage"></a>
+
 </main>
 <footer th:replace="fragments/commons::footer"></footer>
 </body>

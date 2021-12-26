@@ -4,12 +4,12 @@ public class VelocityInMetersPerSecond {
     private final double flowInLitersPerSecond;
     private final double crossSectionAreaInSquareMeters;
 
-    public VelocityInMetersPerSecond(double flow, double crossSectionArea) {
+    protected VelocityInMetersPerSecond(double flow, double crossSectionArea) {
         this.flowInLitersPerSecond = flow;
         this.crossSectionAreaInSquareMeters = crossSectionArea;
     }
 
-    public double getVelocity() {
+    protected double getVelocity() {
         return (flowInLitersPerSecond / 1000) / crossSectionAreaInSquareMeters;
     }
 }

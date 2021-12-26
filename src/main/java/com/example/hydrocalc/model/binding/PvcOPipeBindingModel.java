@@ -6,6 +6,7 @@ import com.example.hydrocalc.model.enums.PvcOPipeEnum;
 import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class PvcOPipeBindingModel {
     }
 
     @Enumerated
+    @NotNull
     public PvcOPipeEnum getPvcOPipeEnum() {
         return pvcOPipeEnum;
     }
@@ -62,7 +64,7 @@ public class PvcOPipeBindingModel {
 
 
     @Enumerated
-//    @NotNull
+    @NotNull
     public NominalPressure getNominalPressure() {
         return nominalPressure;
     }
