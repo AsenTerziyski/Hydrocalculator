@@ -45,7 +45,7 @@
             <ul>
                 <th:block>
                     <li>
-                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" href="/">Home</a>
+                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" href="/">НАЧАЛО</a>
                     </li>
                     <li>
                         <a sec:authorize="!isAuthenticated()" class="bg-info text-warning" th:href="@{/users/register}">РЕГИСТРИРАЙ СЕ</a>
@@ -63,7 +63,7 @@
             <ul>
                 <th:block sec:authorize="isAuthenticated()">
                     <li>
-                        <a class="bg-info text-white" th:href="@{/calc-pipe-DI}">По вътрешен диаметър</a>
+                        <a class="bg-info text-white" th:href="@{/calc-pipe-DI}">Вътрешен диаметър</a>
                     </li>
                     <li>
                         <a class="bg-info text-white" th:href="@{/calc-pipe-PE}">PE</a>
@@ -91,7 +91,7 @@
 
                 <th:block sec:authorize="hasRole('ADMIN')">
                     <li>
-                        <a class="bg-info text-white" href="/">Редактирай потребител</a>
+                        <a class="bg-info text-white" th:href="@{/users/edit}">Редактирай потребител</a>
                     </li>
                     <li>
                         <a class="bg-info text-white" href="/">Изтрий потребител</a>
@@ -117,10 +117,10 @@
 
 <a th:fragment="toMyEquations" class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning"
    th:href="@{/my-calculations}"
-   role="button">КЪМ МОИТЕ ИЗЧИСЛЕНИЯ</a>
+   role="button">МОИТЕ ИЗЧИСЛЕНИЯ</a>
 
 <a th:fragment="toHomePage" class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning" href="/"
-   role="button">КЪМ НАЧАЛНА СТРАНИЦА</a>
+   role="button">НАЧАЛО</a>
 
 
 <footer th:fragment="footer" class="footer bg-blur rounded bg-dark mt-5">

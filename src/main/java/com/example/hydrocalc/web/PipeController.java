@@ -58,18 +58,17 @@ public class PipeController {
                                     RedirectAttributes redirectAttributes, Model model, Principal principal) {
 
         if (bindingResult.hasErrors()) {
-            Set<String> temperatureSet = this.calcPipeResultService.getTemperatureSet();
             redirectAttributes
                     .addFlashAttribute("pipeDIBindingModel", pipeDIBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.pipeDIBindingModel",
-                            pipeDIBindingModel);
-            model.addAttribute("waterTemperatures", temperatureSet);
-            return "pipe-ID-input";
+                            bindingResult);
+            return "redirect:/calc-pipe-DI";
         }
         Long savedResult = -1L;
         if (principal != null) {
             savedResult = this.calcPipeResultService.calculateByInternalDiameter(pipeDIBindingModel, principal.getName());
         } else {
+            //todo -> throw
             savedResult = this.calcPipeResultService.calculateByInternalDiameter(pipeDIBindingModel, null);
         }
 
@@ -105,12 +104,11 @@ public class PipeController {
                                   Model model, Principal principal) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("waterTemperatures", this.calcPipeResultService.getTemperatureSet());
             redirectAttributes
                     .addFlashAttribute("pePipeBindingModel", pePipeBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.pePipeBindingModel",
-                            pePipeBindingModel);
-            return "pipe-PE-input";
+                            bindingResult);
+            return "redirect:/calc-pipe-PE";
         }
 
         Long savedResultId = -1L;
@@ -153,12 +151,11 @@ public class PipeController {
                                     Model model, Principal principal) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("waterTemperatures", this.calcPipeResultService.getTemperatureSet());
             redirectAttributes
                     .addFlashAttribute("pvcOPipeBindingModel", pvcOPipeBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.pvcOPipeBindingModel",
-                            pvcOPipeBindingModel);
-            return "pipe-PVC-O-input";
+                            bindingResult);
+            return "redirect:/calc-pipe-PVC-O";
         }
 
         Long savedResultId = -1L;
@@ -180,6 +177,5 @@ public class PipeController {
         addVelocityAttributesToModel(model, resultById);
         return "pipe-PVC-O-exit";
     }
-
 
 }

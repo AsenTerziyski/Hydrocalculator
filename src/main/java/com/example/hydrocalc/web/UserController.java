@@ -1,5 +1,6 @@
 package com.example.hydrocalc.web;
 
+import com.example.hydrocalc.model.binding.UserEditBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.services.UserService;
@@ -83,6 +84,31 @@ public class UserController {
             //todo
         }
         return "index";
+    }
+
+    @ModelAttribute
+    public UserEditBindingModel userEditBindingModel() {
+        return new UserEditBindingModel();
+    }
+
+    @GetMapping("/users/edit")
+    public String getUsersEditPage() {
+        return "user-edit";
+    }
+
+    @PostMapping("/users/edit/post")
+    public String postUsersEdit(@Valid UserEditBindingModel userEditBindingModel,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute("userEditBindingModel", userEditBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userEditBindingModel",
+                            bindingResult);
+            return "redirect:/users/edit";
+
+        }
+        return "profile";
     }
 
 

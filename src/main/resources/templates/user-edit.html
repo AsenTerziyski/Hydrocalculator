@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head"></head>
+<body class="bg-dark">
+<header th:replace="fragments/commons::nav"></header>
+<main role="main " class="bg-dark">
+
+
+    <div class="container bg-dark rounded p-0 mt-5 w-75">
+        <form
+                th:action="@{/users/edit/post}"
+                th:object="${userEditBindingModel}"
+                th:method="POST"
+                class=" text-center text-light">
+
+            <div class="form-group row text-info">
+                <label for="username" class="col-sm-2 col-form-label">Потребителско име</label>
+                <div class="col-sm-10">
+                    <input
+                            th:field="*{username}"
+                            th:errorclass="is-invalid"
+                            type="text" class="form-control" id="username"
+                            aria-describedby="nameHelpInline" placeholder="Потребителско име">
+                    <small id="usernameHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Дължината на потреботелското име е между 5 и 10 символа.
+                    </small>
+                </div>
+            </div>
+
+
+            <div class="form-group row text-info">
+                <label for="user_role" class="col-sm-2 col-form-label">Роля</label>
+                <div class="col-sm-10">
+                    <select
+                            th:field="*{userRole}"
+                            th:errorclass="is-invalid"
+                            id="user_role" name="user_role" class="custom-select"
+                            aria-describedby="categoryHelpInline">
+                        <option value="" selected>РОЛЯ</option>
+                        <option
+                                th:each="ur:${T(com.example.hydrocalc.model.enums.UserRoleEnum).values()}"
+                                th:value="${ur}"
+                                th:text="${ur}"
+                        >Роля
+                        </option>
+                    </select>
+                    <small id="dnHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Избери роля на потребителя.
+                    </small>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark text-info bg-dark w-20 mb-5 border border-info">РЕДАКТИРАЙ</button>
+
+        </form>
+
+    </div>
+
+    <a th:replace="fragments/commons::toHomePage"></a>
+
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>
