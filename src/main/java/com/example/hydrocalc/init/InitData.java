@@ -1,46 +1,36 @@
 package com.example.hydrocalc.init;
 
-import com.example.hydrocalc.calculator.DarcyWeisbachEquation;
-import com.example.hydrocalc.calculator.PipeCrossSectionAreaInSquareMeters;
-import com.example.hydrocalc.model.entities.UserEntity;
-import com.example.hydrocalc.model.entities.UserRoleEntity;
-import com.example.hydrocalc.model.enums.UserRoleEnum;
-import com.example.hydrocalc.services.CalcPipeResultService;
-import com.example.hydrocalc.services.UserRoleService;
-import com.example.hydrocalc.services.UserService;
+import com.example.hydrocalc.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class InitData implements CommandLineRunner {
     private final CalcPipeResultService calcPipeResultService;
     private final UserRoleService userRoleService;
     private final UserService userService;
+    private final PePipeService pePipeService;
+    private final PvcOPipeService pvcOPipeService;
 
-    public InitData(CalcPipeResultService calcPipeResultService, UserRoleService userRoleService, UserService userService) {
+    public InitData(CalcPipeResultService calcPipeResultService, UserRoleService userRoleService, UserService userService, PePipeService pePipeService, PvcOPipeService pvcOPipeService) {
         this.calcPipeResultService = calcPipeResultService;
         this.userRoleService = userRoleService;
         this.userService = userService;
+        this.pePipeService = pePipeService;
+        this.pvcOPipeService = pvcOPipeService;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        initHydrocalculator();
+    }
+
+    private void initHydrocalculator() {
         System.out.println("HELLO HYDROCALCULATOR :)");
         this.userRoleService.initUserRoles();
         this.userService.initUsers();
-
-        boolean userRoleEdited = this.userService.editUsersRoles("Tuser1", UserRoleEnum.ADMIN);
-        System.out.println();
-        UserEntity tuser1 = this.userService.findUserByUsername("tuser1");
-        tuser1.getRoles().stream().forEach(userRoleEntity -> System.out.println(userRoleEntity.getRole().name()));
-
-        userRoleEdited = this.userService.editUsersRoles("Tuser1", UserRoleEnum.USER);
-        UserEntity tuser11 = this.userService.findUserByUsername("tuser1");
-        System.out.println();
-        tuser11.getRoles().stream().forEach(userRoleEntity -> System.out.println(userRoleEntity.getRole().name()));
-        System.out.println();
-        System.out.println("HELLO HYDROCALCULATOR initialised....");
+        this.pePipeService.initPePipes();
+        this.pvcOPipeService.initPvcOPipes();
+        System.out.println("HYDROCALCULATOR initialised....");
     }
 }

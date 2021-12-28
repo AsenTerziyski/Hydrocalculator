@@ -2,7 +2,6 @@ package com.example.hydrocalc.web;
 
 import com.example.hydrocalc.model.binding.UserEditBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
-import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.services.UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -92,24 +92,45 @@ public class UserController {
     }
 
     @GetMapping("/users/edit")
-    public String getUsersEditPage() {
+    public String getUsersEditPage(Model model, Principal principal) {
+        model.addAttribute("allUsernames", this.userService.getAllUsernames(principal));
+        if (!model.containsAttribute("itIsYourself")) {
+            model.addAttribute("itIsYourself", false);
+        }
         return "user-edit";
     }
 
     @PostMapping("/users/edit/post")
     public String postUsersEdit(@Valid UserEditBindingModel userEditBindingModel,
                                 BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes, Principal principal, Model model) {
+
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("userEditBindingModel", userEditBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.userEditBindingModel",
                             bindingResult);
+//                    .addFlashAttribute("itIsYourself", true);
             return "redirect:/users/edit";
 
         }
-        return "profile";
-    }
 
+        if(principal.getName().equalsIgnoreCase(userEditBindingModel.getUsername())) {
+            redirectAttributes.addFlashAttribute("itIsYourself", true);
+            return "redirect:/users/edit";
+        }
+
+        Long editedUserId = this.userService.editUserRole(userEditBindingModel.getUsername(), userEditBindingModel.getUserRole());
+        if (editedUserId == -1) {
+            //todo - hanlde exception!
+            throw new NullPointerException();
+        } else {
+            this.userService.getUserRolesToString(userEditBindingModel.getUsername());
+            model.addAttribute("editedUser", this.userService.findUserByUsername(userEditBindingModel.getUsername()));
+            model.addAttribute("editedUserRoles", this.userService.getUserRolesToString(userEditBindingModel.getUsername()));
+            return "user-profile";
+        }
+
+    }
 
 }

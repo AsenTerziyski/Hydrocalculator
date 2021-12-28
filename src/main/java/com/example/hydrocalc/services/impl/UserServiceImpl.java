@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -39,6 +40,8 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
     }
+
+
 
     @Override
     @Transactional
@@ -129,20 +132,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean editUsersRoles(String username, UserRoleEnum userRoleEnum) {
+    public Long editUserRole(String username, UserRoleEnum userRoleEnum) {
         Optional<UserEntity> byUsernameIgnoreCase = this.userRepository.findByUsernameIgnoreCase(username);
         if (byUsernameIgnoreCase.isPresent()) {
             if (userRoleEnum.name().equalsIgnoreCase("admin")) {
                 List<UserRoleEntity> allRoles = this.userRoleService.findAllRoles();
                 UserEntity userEntity = byUsernameIgnoreCase.get().setRoles(allRoles);
-                this.userRepository.save(userEntity);
+                return this.userRepository.save(userEntity).getId();
             } else {
                 UserRoleEntity roleByRoleEnum = this.userRoleService.findRoleByRoleEnum(userRoleEnum);
                 UserEntity userEntity = byUsernameIgnoreCase.get().setRoles(List.of(roleByRoleEnum));
-                this.userRepository.save(userEntity);
+                return this.userRepository.save(userEntity).getId();
             }
-            return true;
         }
-        return false;
+        return -1L;
+    }
+
+    @Override
+    public List<String> getAllUsernames(Principal principal) {
+        System.out.println();
+        List<String> allUsernames = new LinkedList<>();
+        List<UserEntity> all = this.userRepository.findAll();
+        if (all.size() == 1) {
+            allUsernames.add("Not found users!");
+        } else {
+            for (UserEntity userEntity : all) {
+                String username = userEntity.getUsername();
+                if (!username.equalsIgnoreCase("admin") && !username.equalsIgnoreCase(principal.getName())) {
+                    allUsernames.add(username);
+                }
+            }
+        }
+        return allUsernames;
+    }
+
+    @Override
+    public String getUserRolesToString(String username) {
+        UserEntity userEntity = this.userRepository.findByUsername(username).orElse(null);
+        if(userEntity != null) {
+            List<UserRoleEntity> roles = userEntity.getRoles();
+            StringBuilder output = new StringBuilder();
+            for (UserRoleEntity role : roles) {
+                output.append(role.getRole().name()).append(" ");
+            }
+            return output.toString().trim().toUpperCase(Locale.ROOT);
+        }
+        return "no roles";
     }
 }

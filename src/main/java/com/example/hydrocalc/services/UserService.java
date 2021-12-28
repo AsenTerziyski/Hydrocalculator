@@ -21,6 +21,9 @@ public interface UserService {
 
     boolean registerNewUserInHydrocalculator(UserRegisterBindingModel userRegisterBindingModel);
 
-    boolean editUsersRoles(String username, UserRoleEnum userRoleEnum);
+    Long editUserRole(String username, UserRoleEnum userRoleEnum);
 
+    List<String> getAllUsernames(Principal principal);
+
+    String getUserRolesToString(String username);
 }
