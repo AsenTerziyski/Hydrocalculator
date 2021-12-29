@@ -1,12 +1,16 @@
 package com.example.hydrocalc.services.impl;
 
+import com.example.hydrocalc.model.binding.PipeEditInternalDiameterBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.model.entities.CalculatorPipeResults;
 import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.model.entities.UserRoleEntity;
+import com.example.hydrocalc.model.enums.PipeMaterialsEnum;
 import com.example.hydrocalc.model.enums.UserRoleEnum;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.repositrory.UserRepository;
+import com.example.hydrocalc.services.PePipeService;
+import com.example.hydrocalc.services.PvcOPipeService;
 import com.example.hydrocalc.services.UserRoleService;
 import com.example.hydrocalc.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -31,14 +35,18 @@ public class UserServiceImpl implements UserService {
     private final HydroCalcUserService hydroCalcUserService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final PePipeService pePipeService;
+    private final PvcOPipeService pvcOPipeService;
 
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, HydroCalcUserService hydroCalcUserService, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, HydroCalcUserService hydroCalcUserService, PasswordEncoder passwordEncoder, ModelMapper modelMapper, PePipeService pePipeService, PvcOPipeService pvcOPipeService) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
         this.hydroCalcUserService = hydroCalcUserService;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.pePipeService = pePipeService;
+        this.pvcOPipeService = pvcOPipeService;
     }
 
 
@@ -178,5 +186,24 @@ public class UserServiceImpl implements UserService {
             return output.toString().trim().toUpperCase(Locale.ROOT);
         }
         return "no roles";
+    }
+
+    @Override
+    public boolean editPipeDI(PipeEditInternalDiameterBindingModel pipeEditInternalDiameterBindingModel) {
+        PipeMaterialsEnum pipeMaterial = pipeEditInternalDiameterBindingModel.getPipeMaterial();
+        System.out.println();
+        switch (pipeMaterial.name().toUpperCase(Locale.ROOT)) {
+            case "PE":
+                return this.pePipeService.editPePipeDI(pipeEditInternalDiameterBindingModel.getDI(), pipeEditInternalDiameterBindingModel.getDN(), pipeEditInternalDiameterBindingModel.getPN());
+            case "PVC_O":
+                return this.pvcOPipeService.editPvcOPipeDI(pipeEditInternalDiameterBindingModel.getDI(), pipeEditInternalDiameterBindingModel.getDN(), pipeEditInternalDiameterBindingModel.getPN());
+//            case "PP":
+////                return false;
+//            case "CAST_IRON":
+////                return false;
+            default:
+                return false;
+        }
+//        return false;
     }
 }

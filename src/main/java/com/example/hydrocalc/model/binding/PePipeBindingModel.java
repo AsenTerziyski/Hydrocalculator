@@ -17,7 +17,7 @@ public class PePipeBindingModel {
     private PePipeEnum pePipeEnum;
     private NominalPressure nominalPressure;
     private WaterTemperatureEnum waterTemperature;
-    private Set<String> temperatures;
+    private String temperature;
 
     @Positive
     public double getFlowInLitersPerSeconds() {
@@ -81,13 +81,13 @@ public class PePipeBindingModel {
         return this;
     }
 
-    @Size(min = 1, max = 1)
-    public Set<String> getTemperatures() {
-        return temperatures;
+    @NotNull
+    public String getTemperature() {
+        return temperature;
     }
 
-    public PePipeBindingModel setTemperatures(Set<String> temperatures) {
-        this.temperatures = temperatures;
+    public PePipeBindingModel setTemperature(String temperature) {
+        this.temperature = temperature;
         return this;
     }
 }

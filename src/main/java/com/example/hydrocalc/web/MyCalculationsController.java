@@ -47,7 +47,6 @@ public class MyCalculationsController {
 
     @DeleteMapping("/remove/{id}")
     public String removeCalculation(@PathVariable Long id, Principal principal, Model model) {
-        System.out.println();
         if (this.calcPipeResultService.isOwnerOrAdmin(principal, id)) {
             boolean removed = this.calcPipeResultService.removeCalculation(id);
         } else {

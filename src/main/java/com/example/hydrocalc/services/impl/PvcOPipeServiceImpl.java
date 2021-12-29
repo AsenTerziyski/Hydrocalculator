@@ -1,6 +1,8 @@
 package com.example.hydrocalc.services.impl;
 
-import com.example.hydrocalc.model.entities.PvcOPipeEntity;
+import com.example.hydrocalc.model.entities.PePipeEntity;
+import com.example.hydrocalc.model.entities.PvcoPipeEntity;
+import com.example.hydrocalc.model.enums.NominalPressure;
 import com.example.hydrocalc.model.enums.PvcOPipeEnum;
 import com.example.hydrocalc.repositrory.PvcOPipeRepository;
 import com.example.hydrocalc.services.PvcOPipeService;
@@ -21,7 +23,7 @@ public class PvcOPipeServiceImpl implements PvcOPipeService {
         if (this.pvcOPipeRepository.count() == 0) {
             PvcOPipeEnum[] values = PvcOPipeEnum.values();
             for (PvcOPipeEnum value : values) {
-                PvcOPipeEntity pvcOPipeEntity = new PvcOPipeEntity();
+                PvcoPipeEntity pvcOPipeEntity = new PvcoPipeEntity();
                 String dn = value.name();
                 switch (dn.toUpperCase(Locale.ROOT)) {
                     case "DN90":
@@ -76,7 +78,32 @@ public class PvcOPipeServiceImpl implements PvcOPipeService {
         }
     }
 
-    private void setDiameters(PvcOPipeEnum value, PvcOPipeEntity pvcOPipeEntity) {
+    @Override
+    public PvcoPipeEntity findPvcoPipeInternalDiameterByDn(String dn) {
+        return this.pvcOPipeRepository.findByDn(dn);
+    }
+
+    @Override
+    public boolean editPvcOPipeDI(double di, String dn, NominalPressure pn) {
+        PvcoPipeEntity byDn = this.pvcOPipeRepository.findByDn(dn);
+        if (byDn != null) {
+            switch (pn.name().toUpperCase(Locale.ROOT)) {
+                case "PN16":
+                    byDn.setDinPn16(di);
+                    break;
+                case "PN25":
+                    byDn.setDinPn25(di);
+                    break;
+                default: return false;
+            }
+            this.pvcOPipeRepository.save(byDn);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void setDiameters(PvcOPipeEnum value, PvcoPipeEntity pvcOPipeEntity) {
         pvcOPipeEntity
                 .setDinPn16(value.getDinPn16())
                 .setDinPn25(value.getDinPn25())

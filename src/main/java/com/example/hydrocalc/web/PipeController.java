@@ -2,15 +2,12 @@ package com.example.hydrocalc.web;
 
 import com.example.hydrocalc.model.binding.PePipeBindingModel;
 import com.example.hydrocalc.model.binding.PipeDIBindingModel;
+import com.example.hydrocalc.model.binding.PipeEditInternalDiameterBindingModel;
 import com.example.hydrocalc.model.binding.PvcOPipeBindingModel;
-import com.example.hydrocalc.model.entities.CalculatorPipeResults;
-import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserService;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +15,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 import java.util.Set;
 
 @Controller
 public class PipeController {
     private final CalcPipeResultService calcPipeResultService;
+    private final UserService userService;
 
 
-    public PipeController(CalcPipeResultService calcPipeResultService) {
+    public PipeController(CalcPipeResultService calcPipeResultService, UserService userService) {
         this.calcPipeResultService = calcPipeResultService;
+        this.userService = userService;
     }
 
     @GetMapping("/calc-pipe-DI")
@@ -177,5 +175,42 @@ public class PipeController {
         addVelocityAttributesToModel(model, resultById);
         return "pipe-PVC-O-exit";
     }
+
+    @GetMapping("/pipes/edit-di")
+    public String getPipeEditIDPage() {
+        return "pipe-edit-ID";
+    }
+
+    @ModelAttribute
+    public PipeEditInternalDiameterBindingModel pipeEditInternalDiameterBindingModel() {
+        return new PipeEditInternalDiameterBindingModel();
+    }
+
+    @PostMapping("/pipes/edit-di")
+    public String postPipeEdit(@Valid PipeEditInternalDiameterBindingModel pipeEditInternalDiameterBindingModel,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute("pipeEditInternalDiameterBindingModel", pipeEditInternalDiameterBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.pipeEditInternalDiameterBindingModel",
+                            bindingResult);
+            return "redirect:/pipes/edit-di";
+        }
+
+        if (principal != null) {
+            boolean successful = this.userService.editPipeDI(pipeEditInternalDiameterBindingModel);
+            if (successful) {
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+            } else {
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                //todo return pipes list page
+            }
+        } else {
+            //todo throw
+        }
+        return "redirect:/pipes/edit-di";
+    }
+
 
 }

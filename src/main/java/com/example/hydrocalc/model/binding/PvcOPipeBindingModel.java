@@ -18,7 +18,7 @@ public class PvcOPipeBindingModel {
     private PvcOPipeEnum pvcOPipeEnum;
     private NominalPressure nominalPressure;
     private WaterTemperatureEnum waterTemperature;
-    private Set<String> temperatures;
+    private String temperature;
 
     @Positive
     public double getFlowInLitersPerSeconds() {
@@ -84,13 +84,13 @@ public class PvcOPipeBindingModel {
         return this;
     }
 
-    @Size(min = 1,max = 1)
-    public Set<String> getTemperatures() {
-        return temperatures;
+    @NotNull
+    public String getTemperature() {
+        return temperature;
     }
 
-    public PvcOPipeBindingModel setTemperatures(Set<String> temperatures) {
-        this.temperatures = temperatures;
+    public PvcOPipeBindingModel setTemperature(String temperature) {
+        this.temperature = temperature;
         return this;
     }
 }

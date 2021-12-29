@@ -3,7 +3,7 @@ package com.example.hydrocalc.model.entities;
 import javax.persistence.Entity;
 
 @Entity
-public class PvcOPipeEntity extends BaseEntity {
+public class PvcoPipeEntity extends BaseEntity {
     private String dn;
     private double DinPn16;
     private double DinPn25;
@@ -12,7 +12,7 @@ public class PvcOPipeEntity extends BaseEntity {
         return dn;
     }
 
-    public PvcOPipeEntity setDn(String dn) {
+    public PvcoPipeEntity setDn(String dn) {
         this.dn = dn;
         return this;
     }
@@ -21,7 +21,7 @@ public class PvcOPipeEntity extends BaseEntity {
         return DinPn16;
     }
 
-    public PvcOPipeEntity setDinPn16(double dinPn16) {
+    public PvcoPipeEntity setDinPn16(double dinPn16) {
         DinPn16 = dinPn16;
         return this;
     }
@@ -30,7 +30,7 @@ public class PvcOPipeEntity extends BaseEntity {
         return DinPn25;
     }
 
-    public PvcOPipeEntity setDinPn25(double dinPn25) {
+    public PvcoPipeEntity setDinPn25(double dinPn25) {
         DinPn25 = dinPn25;
         return this;
     }

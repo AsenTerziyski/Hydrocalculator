@@ -6,6 +6,8 @@ import com.example.hydrocalc.model.binding.PePipeBindingModel;
 import com.example.hydrocalc.model.binding.PvcOPipeBindingModel;
 import com.example.hydrocalc.model.entities.CalculatorPipeResults;
 import com.example.hydrocalc.model.binding.PipeDIBindingModel;
+import com.example.hydrocalc.model.entities.PePipeEntity;
+import com.example.hydrocalc.model.entities.PvcoPipeEntity;
 import com.example.hydrocalc.model.entities.UserEntity;
 import com.example.hydrocalc.model.enums.NominalPressure;
 import com.example.hydrocalc.model.enums.PePipeEnum;
@@ -14,14 +16,14 @@ import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.repositrory.CalculatorPipeResultRepository;
 import com.example.hydrocalc.services.CalcPipeResultService;
+import com.example.hydrocalc.services.PePipeService;
+import com.example.hydrocalc.services.PvcOPipeService;
 import com.example.hydrocalc.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -30,11 +32,15 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     private final CalculatorPipeResultRepository calculatorPipeResultRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final PePipeService pePipeService;
+    private final PvcOPipeService pvcOPipeService;
 
-    public CalcPipeResultServiceImpl(CalculatorPipeResultRepository calculatorPipeResultRepository, UserService userService, ModelMapper modelMapper) {
+    public CalcPipeResultServiceImpl(CalculatorPipeResultRepository calculatorPipeResultRepository, UserService userService, ModelMapper modelMapper, PePipeService pePipeService, PvcOPipeService pvcOPipeService) {
         this.calculatorPipeResultRepository = calculatorPipeResultRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.pePipeService = pePipeService;
+        this.pvcOPipeService = pvcOPipeService;
     }
 
     @Override
@@ -59,11 +65,11 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     @Override
     @Transactional
     public Long calculateByInternalDiameter(PipeDIBindingModel inputByInternalDiameter, String username) {
-        Set<String> temperatures = inputByInternalDiameter.getTemperatures();
+
         WaterTemperatureEnum waterTemperature = null;
         double kinematicViscosity = 0;
-        for (String rawInputTemperature : temperatures) {
-            String inputTemperature = rawInputTemperature.substring(0, 2);
+
+        String inputTemperature = inputByInternalDiameter.getTemperature().substring(0, 2);
             WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
             for (WaterTemperatureEnum value : values) {
                 String enumTemperature = value.name().substring(1, 3);
@@ -73,7 +79,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
                     break;
                 }
             }
-        }
+
 
         double di = inputByInternalDiameter.getDI();
         double flowInLitersPerSeconds = inputByInternalDiameter.getFlowInLitersPerSeconds();
@@ -95,26 +101,24 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
 
     @Override
     public Long calculatePePipe(PePipeBindingModel pePipeBindingModel, String username) {
-        NominalPressure nominalPressure = pePipeBindingModel.getNominalPressure();
 
         double internalDiameter = getPePipeInternalDiameter(pePipeBindingModel);
         if (internalDiameter == 0) {
             return -1L;
         }
 
-        Set<String> temperatures = pePipeBindingModel.getTemperatures();
         WaterTemperatureEnum waterTemperature = null;
         double kinematicViscosity = 0;
-        for (String rawInputTemperature : temperatures) {
-            String inputTemperature = rawInputTemperature.substring(0, 2);
-            WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
-            for (WaterTemperatureEnum value : values) {
-                String enumTemperature = value.name().substring(1, 3);
-                if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
-                    kinematicViscosity = value.getKinematicViscosity();
-                    waterTemperature = value;
-                    break;
-                }
+
+        String inputTemperature = pePipeBindingModel.getTemperature().substring(0, 2);
+        WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+
+        for (WaterTemperatureEnum value : values) {
+            String enumTemperature = value.name().substring(1, 3);
+            if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
+                kinematicViscosity = value.getKinematicViscosity();
+                waterTemperature = value;
+                break;
             }
         }
 
@@ -137,11 +141,10 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
             return -1L;
         }
 
-        Set<String> temperatures = pvcOPipeBindingModel.getTemperatures();
         WaterTemperatureEnum waterTemperature = null;
         double kinematicViscosity = 0;
-        for (String rawInputTemperature : temperatures) {
-            String inputTemperature = rawInputTemperature.substring(0, 2);
+
+            String inputTemperature = pvcOPipeBindingModel.getTemperature().substring(0, 2);
             WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
             for (WaterTemperatureEnum value : values) {
                 String enumTemperature = value.name().substring(1, 3);
@@ -151,7 +154,6 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
                     break;
                 }
             }
-        }
 
         CalculatorPipeResults pvcOPipeResults = HydroCalculator.calculatePipe(internalDiameter, pvcOPipeBindingModel.getFlowInLitersPerSeconds(),
                 pvcOPipeBindingModel.getRoughnessHeightInMm(), pvcOPipeBindingModel.getLength(), kinematicViscosity);
@@ -312,12 +314,13 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
 
     private double getPvcOPipeInternalDiameter(PvcOPipeBindingModel pvcOPipeBindingModel) {
         NominalPressure nominalPressure = pvcOPipeBindingModel.getNominalPressure();
+        PvcoPipeEntity pvcOPipe = this.pvcOPipeService.findPvcoPipeInternalDiameterByDn(pvcOPipeBindingModel.getPvcOPipeEnum().name());
         double internalDiameter = 0.00;
         if (nominalPressure.equals(NominalPressure.PN16)) {
-            internalDiameter = pvcOPipeBindingModel.getPvcOPipeEnum().getDinPn16();
+            internalDiameter = pvcOPipe.getDinPn16();
         }
         if (nominalPressure.equals(NominalPressure.PN25)) {
-            internalDiameter = pvcOPipeBindingModel.getPvcOPipeEnum().getDinPn25();
+            internalDiameter = pvcOPipe.getDinPn25();
         }
         return internalDiameter;
     }
@@ -337,19 +340,20 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     }
 
     private double getPePipeInternalDiameter(PePipeBindingModel pePipeBindingModel) {
+        PePipeEntity pePipe = this.pePipeService.findPipeInternalDiameterByDN(pePipeBindingModel.getPePipeEnum().name());
         NominalPressure nominalPressure = pePipeBindingModel.getNominalPressure();
         double internalDiameter = 0.00;
         if (nominalPressure.equals(NominalPressure.PN10)) {
-            internalDiameter = pePipeBindingModel.getPePipeEnum().getDinPN10();
+            internalDiameter = pePipe.getDinPN10();
         }
         if (nominalPressure.equals(NominalPressure.PN16)) {
-            internalDiameter = pePipeBindingModel.getPePipeEnum().getDinPN16();
+            internalDiameter = pePipe.getDinPN16();
         }
         if (nominalPressure.equals(NominalPressure.PN20)) {
-            internalDiameter = pePipeBindingModel.getPePipeEnum().getDinPN20();
+            internalDiameter = pePipe.getDinPN20();
         }
         if (nominalPressure.equals(NominalPressure.PN25)) {
-            internalDiameter = pePipeBindingModel.getPePipeEnum().getDinPN25();
+            internalDiameter = pePipe.getDinPN25();
         }
         return internalDiameter;
     }

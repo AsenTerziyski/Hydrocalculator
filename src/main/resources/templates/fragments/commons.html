@@ -80,9 +80,7 @@
                     <li>
                         <a class="bg-info text-white" href="/">ЧУГУНЕНИ</a>
                     </li>
-                    <li>
-                        <a class="bg-info text-white" href="/">БЕТОНОВИ</a>
-                    </li>
+
                     <li>
                         <a class="bg-info text-white"
                            th:href="@{/logout-page}">ИЗХОД</a>
@@ -90,6 +88,10 @@
                 </th:block>
 
                 <th:block sec:authorize="hasRole('ADMIN')">
+                    <li>
+                        <a class="bg-info text-white" th:href="@{/pipes/edit-di}">Редактирай DI</a>
+                    </li>
+
                     <li>
                         <a class="bg-info text-white" th:href="@{/users/edit}">Редактирай потребител</a>
                     </li>

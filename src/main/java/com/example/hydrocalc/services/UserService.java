@@ -1,5 +1,6 @@
 package com.example.hydrocalc.services;
 
+import com.example.hydrocalc.model.binding.PipeEditInternalDiameterBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.model.entities.CalculatorPipeResults;
 import com.example.hydrocalc.model.entities.UserEntity;
@@ -26,4 +27,6 @@ public interface UserService {
     List<String> getAllUsernames(Principal principal);
 
     String getUserRolesToString(String username);
+
+    boolean editPipeDI(PipeEditInternalDiameterBindingModel pipeEditInternalDiameterBindingModel);
 }

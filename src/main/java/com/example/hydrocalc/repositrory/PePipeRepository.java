@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PePipeRepository extends JpaRepository<PePipeEntity, Long> {
+
+    PePipeEntity findByDn(String dn);
+
 }
