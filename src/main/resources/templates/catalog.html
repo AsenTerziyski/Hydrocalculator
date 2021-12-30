@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head"></head>
+
+<body class="bg-dark">
+<header th:replace="fragments/commons::nav"></header>
+
+<main role="main" class="bg-dark">
+
+    <!--    <h5 th:if="${highVelocity} == true" class="mt-5 text-center">-->
+    <!--        <strong class="bg-blur rounded text-danger">-->
+    <!--            Внимание: висока скорост на водата! </strong>-->
+    <!--    </h5>-->
+    <!--    <h5 th:if="${lowVelocity} == true" class="mt-5 text-center">-->
+    <!--        <strong class="bg-blur rounded text-danger">-->
+    <!--            Внимание: ниска скорост на водата! </strong>-->
+    <!--    </h5>-->
+
+    <h5>
+        <p class="text-warning">
+            ХИДРОКАЛКУЛАТОР РАБОТИ СЪС СЛЕДНИТЕ ВЪТРЕШНИ ДИАМЕТРИ:
+        </p>
+        </br>
+    </h5>
+    <h6 class="text-warning">
+        <p>
+            1. PE100 ТРЪБИ:
+        </p>
+    </h6>
+    <div th:each="pe:${PE}" class="container align-content-center bg-dark">
+        <div class="row align-content-center bg-dark">
+            <li class="list-group-item bg-dark text-info p-1">
+                <h6>
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| ${pe};|">dn</span>
+                    </div>
+                </h6>
+            </li>
+        </div>
+    </div>
+    <h6 class="text-warning">
+        <p>
+            2. PVC-O ТРЪБИ:
+        </p>
+    </h6>
+    <div th:each="pv:${PVCo}" class="container align-content-center bg-dark p-0">
+        <div class="row align-content-center bg-dark">
+            <li class="list-group-item bg-dark text-info p-1">
+                <h6>
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| ${pv};|">pvco</span>
+                    </div>
+                </h6>
+            </li>
+        </div>
+    </div>
+
+
+    <th:block sec:authorize="isAuthenticated()">
+        <a th:replace="fragments/commons::toMyEquations"></a>
+    </th:block>
+
+    <a th:replace="fragments/commons::toHomePage"></a>
+
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>

@@ -201,15 +201,16 @@ public class PipeController {
         if (principal != null) {
             boolean successful = this.userService.editPipeDI(pipeEditInternalDiameterBindingModel);
             if (successful) {
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+                return "redirect:/catalog";
             } else {
                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                //todo return pipes list page
+                //todo - return smthng went wrong
             }
         } else {
-            //todo throw
+            throw new IllegalArgumentException();
+            //todo throw not supported
         }
-        return "redirect:/pipes/edit-di";
+        return "redirect:/catalog";
     }
 
 

@@ -31,6 +31,6 @@ public class InitData implements CommandLineRunner {
         this.userService.initUsers();
         this.pePipeService.initPePipes();
         this.pvcOPipeService.initPvcOPipes();
-        System.out.println("HYDROCALCULATOR initialised....");
+        System.out.print("HYDROCALCULATOR initialised....");
     }
 }

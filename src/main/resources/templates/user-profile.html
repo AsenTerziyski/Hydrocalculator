@@ -9,7 +9,7 @@
     <div class="container mt-5">
         <div class="row d-flex justify-content-center">
             <div class="col-md-7">
-                <div class="profile-card p-3 py-4 text-warning bg-info">
+                <div th:object="${userId}" class="profile-card p-3 py-4 text-warning bg-info">
                     <div class="text-center"><img src="/images/myLogo.png" width="100" class="rounded-circle"></div>
 
                     <div class="text-center mt-5 bg-info">
@@ -23,26 +23,16 @@
                         <h5 class="mt-2 mb-0">РОЛИ</h5>
                         <span th:object="${editedUserRoles}" th:text="${editedUserRoles}">Роли</span>
 
-                        <!--                        <h5 class="mt-2 mb-0">Age</h5>-->
-                        <!--                        <span>33</span>-->
+                        <h5 class="mt-2 mb-0">При натискане на бутона изтрий, потребителят ще бъде заличен завинаги!
+                        </h5>
 
-                        <!--                        <div class="px-4 mt-5">-->
-                        <!--                            <p class="fonts">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim et nostrum-->
-                        <!--                                optio perferendis quam quod ratione rem sit soluta ut! A dolor laborum, maiores neque-->
-                        <!--                                nesciunt quis rerum sunt suscipit. </p>-->
-                        <!--                        </div>-->
-
-                        <!--                        <ul class="social-list">-->
-                        <!--                            <li><i class="fab fa-facebook-square"></i></li>-->
-                        <!--                            <li><i class="fab fa-instagram"></i></li>-->
-                        <!--                            <li><i class="fab fa-linkedin"></i></li>-->
-                        <!--                            <li><i class="fab fa-google"></i></li>-->
-                        <!--                        </ul>-->
-                        <!--                        <div class="buttons">-->
-                        <!--                            <button class="btn btn-outline-primary px-4">Back</button>-->
-                        <!--                            &lt;!&ndash;                            <button class="btn btn-primary px-4 ms-3">Contact</button>&ndash;&gt;-->
-                        <!--                        </div>-->
                     </div>
+                    <div class="justify-content-center">
+                        <form th:action="@{/user/delete/{id} (id = ${userId})}" th:method="delete"><input
+                                class="justify-content-center nav-link text-danger bg-info mt-5 border-danger" type="submit" value="ИЗТРИЙ!">
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>

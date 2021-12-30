@@ -206,4 +206,14 @@ public class UserServiceImpl implements UserService {
         }
 //        return false;
     }
+
+    @Override
+    public boolean removeUser(Long id) {
+        UserEntity userEntity = this.userRepository.findById(id).orElse(null);
+        if (userEntity !=null) {
+            this.userRepository.delete(userEntity);
+            return true;
+        }
+        return false;
+    }
 }

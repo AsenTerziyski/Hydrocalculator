@@ -29,4 +29,6 @@ public interface UserService {
     String getUserRolesToString(String username);
 
     boolean editPipeDI(PipeEditInternalDiameterBindingModel pipeEditInternalDiameterBindingModel);
+
+    boolean removeUser(Long id);
 }

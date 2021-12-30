@@ -3,17 +3,20 @@ package com.example.hydrocalc.web;
 import com.example.hydrocalc.model.binding.UserEditBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.services.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Controller
 public class UserController {
@@ -110,7 +113,6 @@ public class UserController {
                     .addFlashAttribute("userEditBindingModel", userEditBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.userEditBindingModel",
                             bindingResult);
-//                    .addFlashAttribute("itIsYourself", true);
             return "redirect:/users/edit";
 
         }
@@ -126,10 +128,27 @@ public class UserController {
             throw new NullPointerException();
         } else {
             this.userService.getUserRolesToString(userEditBindingModel.getUsername());
+            model.addAttribute("userId", this.userService.findUserByUsername(userEditBindingModel.getUsername()).getId());
             model.addAttribute("editedUser", this.userService.findUserByUsername(userEditBindingModel.getUsername()));
             model.addAttribute("editedUserRoles", this.userService.getUserRolesToString(userEditBindingModel.getUsername()));
             return "user-profile";
         }
 
+    }
+
+    @DeleteMapping("/user/delete/{id}")
+    public String removeCalculation(@PathVariable Long id, Principal principal, Model model) {
+        if (this.userService.userIsAdmin(this.userService.findUserByUsername(principal.getName()))) {
+            boolean successfullyRemoved = this.userService.removeUser(id);
+            if (successfullyRemoved) {
+                //todo
+            } else {
+                // todo
+            }
+        } else {
+            //todo
+            throw new IllegalArgumentException();
+        }
+        return "redirect:/users/edit";
     }
 }

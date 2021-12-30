@@ -7,6 +7,7 @@ import com.example.hydrocalc.repositrory.PePipeRepository;
 import com.example.hydrocalc.services.PePipeService;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -261,5 +262,34 @@ public class PePipeServiceImpl implements PePipeService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<String> getPeCatalog() {
+        List<PePipeEntity> all = this.pePipeRepository.findAll();
+        List<String> peCatalog = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (PePipeEntity pePipeEntity : all) {
+            String dn = pePipeEntity.getDn();
+            double dinPN10 = pePipeEntity.getDinPN10();
+            double dinPN16 = pePipeEntity.getDinPN16();
+            double dinPN20 = pePipeEntity.getDinPN20();
+            i++;
+            sb.append("1." + i + ". " + dn + ": ");
+            if (dinPN10 > 0) {
+                sb.append("[ PN10 - DI=" + dinPN10 + " ], ").append(System.lineSeparator());
+            }
+            if (dinPN16 > 0) {
+                sb.append("[ PN16 - DI=" + dinPN16 + " ], ").append(System.lineSeparator());
+            }
+            if (dinPN20 > 0) {
+                sb.append("[ PN20 - DI=" + dinPN20 + " ], ").append(System.lineSeparator());
+            }
+            sb.append(System.lineSeparator());
+            peCatalog.add(sb.toString().trim().substring(0, sb.toString().trim().length() - 1));
+            sb = new StringBuilder();
+        }
+        return peCatalog;
     }
 }

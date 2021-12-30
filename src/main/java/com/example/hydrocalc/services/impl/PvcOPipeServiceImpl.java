@@ -1,5 +1,6 @@
 package com.example.hydrocalc.services.impl;
 
+import com.example.hydrocalc.model.entities.PePipeEntity;
 import com.example.hydrocalc.model.entities.PvcOPipeEntity;
 import com.example.hydrocalc.model.enums.NominalPressure;
 import com.example.hydrocalc.model.enums.PvcOPipeEnum;
@@ -7,6 +8,8 @@ import com.example.hydrocalc.repositrory.PvcOPipeRepository;
 import com.example.hydrocalc.services.PvcOPipeService;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -100,6 +103,33 @@ public class PvcOPipeServiceImpl implements PvcOPipeService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<String> getPvcoCatalog() {
+        List<PvcOPipeEntity> all = this.pvcOPipeRepository.findAll();
+        List<String> pvcOCatalog = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (PvcOPipeEntity pvcOPipeEntity : all) {
+            String dn = pvcOPipeEntity.getDn();
+            double dinPn16 = pvcOPipeEntity.getDinPn16();
+            double dinPn25 = pvcOPipeEntity.getDinPn25();
+
+
+            i++;
+            sb.append("2." + i + ". " + dn + ": ");
+            if (dinPn16 > 0) {
+                sb.append("[ PN16 - DI=" + dinPn16 + " ], ").append(System.lineSeparator());
+            }
+            if (dinPn25> 0) {
+                sb.append("[ PN25 - DI=" + dinPn25 + " ], ").append(System.lineSeparator());
+            }
+            sb.append(System.lineSeparator());
+            pvcOCatalog.add(sb.toString().trim().substring(0, sb.toString().trim().length() - 1));
+            sb = new StringBuilder();
+        }
+        return pvcOCatalog;
     }
 
     private void setDiameters(PvcOPipeEnum value, PvcOPipeEntity pvcOPipeEntity) {

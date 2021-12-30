@@ -13,4 +13,7 @@ public interface PePipeService {
     PePipeEntity findPipeInternalDiameterByDN(String dn);
 
     boolean editPePipeDI(double di, String dn, NominalPressure pn);
+
+    List<String> getPeCatalog();
+
 }
