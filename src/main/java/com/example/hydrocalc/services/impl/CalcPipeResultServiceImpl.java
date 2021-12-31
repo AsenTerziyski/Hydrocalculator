@@ -20,12 +20,17 @@ import com.example.hydrocalc.services.PePipeService;
 import com.example.hydrocalc.services.PvcOPipeService;
 import com.example.hydrocalc.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+
 import java.time.LocalDateTime;
 import java.util.*;
+
 
 @Service
 public class CalcPipeResultServiceImpl implements CalcPipeResultService {
@@ -34,6 +39,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     private final ModelMapper modelMapper;
     private final PePipeService pePipeService;
     private final PvcOPipeService pvcOPipeService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CalcPipeResultServiceImpl.class);
 
     public CalcPipeResultServiceImpl(CalculatorPipeResultRepository calculatorPipeResultRepository, UserService userService, ModelMapper modelMapper, PePipeService pePipeService, PvcOPipeService pvcOPipeService) {
         this.calculatorPipeResultRepository = calculatorPipeResultRepository;
@@ -70,15 +76,15 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         double kinematicViscosity = 0;
 
         String inputTemperature = inputByInternalDiameter.getTemperature().substring(0, 2);
-            WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
-            for (WaterTemperatureEnum value : values) {
-                String enumTemperature = value.name().substring(1, 3);
-                if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
-                    kinematicViscosity = value.getKinematicViscosity();
-                    waterTemperature = value;
-                    break;
-                }
+        WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+        for (WaterTemperatureEnum value : values) {
+            String enumTemperature = value.name().substring(1, 3);
+            if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
+                kinematicViscosity = value.getKinematicViscosity();
+                waterTemperature = value;
+                break;
             }
+        }
 
 
         double di = inputByInternalDiameter.getDI();
@@ -144,16 +150,16 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         WaterTemperatureEnum waterTemperature = null;
         double kinematicViscosity = 0;
 
-            String inputTemperature = pvcOPipeBindingModel.getTemperature().substring(0, 2);
-            WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
-            for (WaterTemperatureEnum value : values) {
-                String enumTemperature = value.name().substring(1, 3);
-                if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
-                    kinematicViscosity = value.getKinematicViscosity();
-                    waterTemperature = value;
-                    break;
-                }
+        String inputTemperature = pvcOPipeBindingModel.getTemperature().substring(0, 2);
+        WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+        for (WaterTemperatureEnum value : values) {
+            String enumTemperature = value.name().substring(1, 3);
+            if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
+                kinematicViscosity = value.getKinematicViscosity();
+                waterTemperature = value;
+                break;
             }
+        }
 
         CalculatorPipeResults pvcOPipeResults = HydroCalculator.calculatePipe(internalDiameter, pvcOPipeBindingModel.getFlowInLitersPerSeconds(),
                 pvcOPipeBindingModel.getRoughnessHeightInMm(), pvcOPipeBindingModel.getLength(), kinematicViscosity);
@@ -279,23 +285,24 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         return temperatures;
     }
 
+
     @Override
-    public boolean delete30daysOldRecords() {
-        //todo
-//        LocalDate now = LocalDate.now();
-//        LocalDate testDate = LocalDate.of(2021, 12, 2);
-//        List<CalculatorPipeResults> allResults = this.calculatorPipeResultRepository.findAll();
-//        for (CalculatorPipeResults result : allResults) {
-////            if result.getInstanted....
-//            LocalDate thirtyDays = now.minusDays(30);
-//            if (thirtyDays.isBefore(testDate)) {
-//              .....
-//            }
-//
-//            return true;
-//        }
-//        return false;
-        return false;
+    @Scheduled(cron = "0 0/5 * * * *")
+    public void delete30daysOldRecords() {
+        LOGGER.info("Fired delete30daysOldRecords method!");
+        List<CalculatorPipeResults> allResults = this.calculatorPipeResultRepository.findAll();
+        if (!allResults.isEmpty()) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime thirtyDaysOld = now.minusDays(30);
+            for (CalculatorPipeResults result : allResults) {
+                LocalDateTime created = result.getCreated();
+                if (created.isBefore(thirtyDaysOld)) {
+                    LOGGER.info("Deleted result with ID: {}", result.getId());
+                    this.calculatorPipeResultRepository.delete(result);
+                }
+            }
+        }
+        LOGGER.info("Didn't find any results older than 30 days!");
     }
 
     @Override

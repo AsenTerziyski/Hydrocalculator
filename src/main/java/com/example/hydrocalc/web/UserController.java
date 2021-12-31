@@ -137,17 +137,20 @@ public class UserController {
     }
 
     @DeleteMapping("/user/delete/{id}")
-    public String removeCalculation(@PathVariable Long id, Principal principal, Model model) {
-        if (this.userService.userIsAdmin(this.userService.findUserByUsername(principal.getName()))) {
+    public String removeCalculation(@PathVariable Long id, Authentication authentication, Model model) {
+        boolean hasRoleAdmin = authentication
+                .getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equalsIgnoreCase("role_admin"));
+        if (hasRoleAdmin) {
             boolean successfullyRemoved = this.userService.removeUser(id);
             if (successfullyRemoved) {
                 //todo
             } else {
-                // todo
+                //todo
             }
         } else {
             //todo
-            throw new IllegalArgumentException();
         }
         return "redirect:/users/edit";
     }

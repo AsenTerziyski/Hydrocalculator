@@ -151,8 +151,7 @@ public class PipeController {
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("pvcOPipeBindingModel", pvcOPipeBindingModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.pvcOPipeBindingModel",
-                            bindingResult);
+                    .addFlashAttribute("org.springframework.validation.BindingResult.pvcOPipeBindingModel", bindingResult);
             return "redirect:/calc-pipe-PVC-O";
         }
 

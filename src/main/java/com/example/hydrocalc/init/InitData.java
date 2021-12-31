@@ -1,8 +1,12 @@
 package com.example.hydrocalc.init;
 
 import com.example.hydrocalc.services.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class InitData implements CommandLineRunner {
@@ -11,6 +15,7 @@ public class InitData implements CommandLineRunner {
     private final UserService userService;
     private final PePipeService pePipeService;
     private final PvcOPipeService pvcOPipeService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitData.class);
 
     public InitData(CalcPipeResultService calcPipeResultService, UserRoleService userRoleService, UserService userService, PePipeService pePipeService, PvcOPipeService pvcOPipeService) {
         this.calcPipeResultService = calcPipeResultService;
@@ -26,11 +31,11 @@ public class InitData implements CommandLineRunner {
     }
 
     private void initHydrocalculator() {
-        System.out.println("HELLO HYDROCALCULATOR :)");
+        LOGGER.info("HELLO HYDROCALCULATOR :)");
         this.userRoleService.initUserRoles();
         this.userService.initUsers();
         this.pePipeService.initPePipes();
         this.pvcOPipeService.initPvcOPipes();
-        System.out.print("HYDROCALCULATOR initialised....");
+        LOGGER.info("HYDROCALCULATOR initialized at {}!", LocalDateTime.now());
     }
 }

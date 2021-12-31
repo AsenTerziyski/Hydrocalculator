@@ -34,6 +34,6 @@ public interface CalcPipeResultService {
 
     Set<String> getTemperatureSet();
 
-    boolean delete30daysOldRecords();
+    void delete30daysOldRecords();
 
 }
