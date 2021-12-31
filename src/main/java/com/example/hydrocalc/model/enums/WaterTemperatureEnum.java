@@ -11,6 +11,7 @@ public enum WaterTemperatureEnum {
     C50(0.5531 * Math.pow(10, -6)),
     C60(0.4740 * Math.pow(10, -6)),
     C70(0.4127 * Math.pow(10, -6));
+    //todo-check kinematic viscosity!
 
 
 

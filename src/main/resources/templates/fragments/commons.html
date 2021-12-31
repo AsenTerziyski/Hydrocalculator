@@ -28,7 +28,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/images/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
@@ -45,17 +45,20 @@
             <ul>
                 <th:block>
                     <li>
-                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" href="/">НАЧАЛО</a>
-                    </li>
-                    <li>
-                        <a sec:authorize="!isAuthenticated()" class="bg-info text-warning" th:href="@{/users/register}">РЕГИСТРИРАЙ СЕ</a>
+                        <a sec:authorize="!isAuthenticated()" class="bg-info text-warning" th:href="@{/users/register}">РЕГИСТРИРАЙ
+                            СЕ</a>
                     </li>
                     <li>
                         <a sec:authorize="!isAuthenticated()" class="bg-info text-warning"
                            th:href="@{/users/login}">ВХОД</a>
                     </li>
                     <li>
-                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" th:href="@{/catalog}">ДИАМЕТРИ</a>
+                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white"
+                           th:href="@{/catalog}">ДИАМЕТРИ</a>
+                    </li>
+                    <li>
+                        <a sec:authorize="!isAuthenticated()" class="bg-info text-white" th:href="@{/calc-pipe-DI}">Вътрешен
+                            диаметър</a>
                     </li>
                 </th:block>
             </ul>
@@ -69,22 +72,18 @@
                         <a class="bg-info text-white" th:href="@{/calc-pipe-PE}">PE</a>
                     </li>
                     <li>
-                        <a class="bg-info text-white" th:href="@{/calc-pipe-PVC-O}" >PVC-O</a>
+                        <a class="bg-info text-white" th:href="@{/calc-pipe-PVC-O}">PVC-O</a>
                     </li>
                     <li>
                         <a class="bg-info text-white" href="/">PP</a>
                     </li>
-                    <li>
-                        <a class="bg-info text-white" href="/">СТЪКЛОПЛАСТОВИ</a>
-                    </li>
-                    <li>
-                        <a class="bg-info text-white" href="/">ЧУГУНЕНИ</a>
-                    </li>
+                    <!--                    <li>-->
+                    <!--                        <a class="bg-info text-white" href="/">СТЪКЛОПЛАСТОВИ</a>-->
+                    <!--                    </li>-->
+                    <!--                    <li>-->
+                    <!--                        <a class="bg-info text-white" href="/">ЧУГУНЕНИ</a>-->
+                    <!--                    </li>-->
 
-                    <li>
-                        <a class="bg-info text-white"
-                           th:href="@{/logout-page}">ИЗХОД</a>
-                    </li>
                 </th:block>
 
                 <th:block sec:authorize="hasRole('ADMIN')">
@@ -95,9 +94,9 @@
                     <li>
                         <a class="bg-info text-white" th:href="@{/users/edit}">Редактирай потребител</a>
                     </li>
-                    <li>
-                        <a class="bg-info text-white" href="/">Изтрий потребител</a>
-                    </li>
+<!--                    <li>-->
+<!--                        <a class="bg-info text-white" href="/">Изтрий потребител</a>-->
+<!--                    </li>-->
                     <li>
                         <a class="bg-info text-white" href="/">Браузинг история</a>
                     </li>
@@ -106,23 +105,35 @@
                     </li>
                 </th:block>
 
+                <th:block sec:authorize="isAuthenticated()">
+                    <li>
+                        <a class="bg-info text-warning"
+                           th:href="@{/logout-page}">ИЗХОД</a>
+                    </li>
+                </th:block>
+
             </ul>
         </nav>
     </header>
 </div>
 
-<button th:fragment="CALCULATE" type="submit" class="btn btn-dark text-info bg-dark w-20 mb-5 border border-info">ИЗЧИСЛИ</button>
+<button th:fragment="CALCULATE" type="submit" class="btn btn-dark text-white bg-info w-20 mb-5 border border-info">
+    ИЗЧИСЛИ
+</button>
 
-<a th:fragment="calculateAgain" class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-3 border border-warning"
+<a th:fragment="calculateAgain"
+   class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-3 border border-warning"
    href="/calc-pipe-DI"
    role="button">ИЗЧИСЛИ ОТНОВО</a>
 
-<a th:fragment="toMyEquations" class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning"
+<a th:fragment="toMyEquations"
+   class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning"
    th:href="@{/my-calculations}"
    role="button">МОИТЕ ИЗЧИСЛЕНИЯ</a>
 
-<a th:fragment="toHomePage" class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning" href="/"
-   role="button">НАЧАЛО</a>
+<a th:fragment="toHomePage"
+   class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning" href="/"
+   role="button">НAЗАД</a>
 
 
 <footer th:fragment="footer" class="footer bg-blur rounded bg-dark mt-5">
