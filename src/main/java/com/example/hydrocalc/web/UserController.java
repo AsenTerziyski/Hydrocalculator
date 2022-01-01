@@ -2,9 +2,9 @@ package com.example.hydrocalc.web;
 
 import com.example.hydrocalc.model.binding.UserEditBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
+import com.example.hydrocalc.services.UserBrowserService;
 import com.example.hydrocalc.services.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +14,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Controller
 public class UserController {
     private final UserService userService;
+    private final UserBrowserService userBrowserService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserBrowserService userBrowserService) {
         this.userService = userService;
+        this.userBrowserService = userBrowserService;
     }
 
     @GetMapping("/users/login")
@@ -153,5 +152,11 @@ public class UserController {
             //todo
         }
         return "redirect:/users/edit";
+    }
+
+    @GetMapping("/users/browser")
+    public String getUserBrowserPage(Model model) {
+        model.addAttribute("usersWhoBrowsed", this.userBrowserService.findAll());
+        return "user-browser";
     }
 }
