@@ -37,6 +37,7 @@ public class HydrocalculatorEventListener {
         userBrowser.setUsername(userName);
         userBrowser.setCreated(LocalDateTime.now());
         userBrowser.setModified(LocalDateTime.now());
+        userBrowser.setClientsAddress(clientAddress);
         this.userBrowserService.registerUser(userBrowser);
     }
 
