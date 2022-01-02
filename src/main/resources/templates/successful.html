@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head">
+</head>
+
+<body class="bg-dark">
+<header th:replace="fragments/commons::nav"></header>
+
+<main role="main" class="bg-dark">
+
+
+    <div class="container align-content-center bg-dark p-4">
+        <div class="row align-content-center">
+
+            <div class="container-fluid">
+                <h5 class="text-center text-danger mt-5">Successful!</h5>
+            </div>
+
+        </div>
+    </div>
+
+    <a th:replace="fragments/commons::toHomePage"></a>
+</main>
+<footer th:replace="fragments/commons::footer">
+</footer>
+</body>
+</html>

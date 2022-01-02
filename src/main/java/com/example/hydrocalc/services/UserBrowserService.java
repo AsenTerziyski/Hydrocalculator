@@ -8,4 +8,6 @@ public interface UserBrowserService {
     void registerUser(UserBrowser userBrowser);
 
     List<UserBrowser> findAll();
+
+    void deleteBrowsingHistory();
 }

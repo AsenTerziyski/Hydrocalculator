@@ -3,6 +3,7 @@ package com.example.hydrocalc.web;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserService;
+import com.example.hydrocalc.web.exceptions.UserNotAllowedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,7 @@ public class MyCalculationsController {
         if (this.calcPipeResultService.isOwnerOrAdmin(principal, id)) {
             boolean removed = this.calcPipeResultService.removeCalculation(id);
         } else {
-            //todo
+            throw new UserNotAllowedException(principal.getName());
         }
         return "redirect:/my-calculations";
     }

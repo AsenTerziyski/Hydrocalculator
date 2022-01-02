@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Entity
 public class UserBrowser extends BaseEntity {
     private String username;
-    public static int counter;
+    private String clientsAddress;
 
     public UserBrowser() {
     }
@@ -18,6 +18,15 @@ public class UserBrowser extends BaseEntity {
 
     public UserBrowser setUsername(String username) {
         this.username = username;
+        return this;
+    }
+
+    public String getClientsAddress() {
+        return clientsAddress;
+    }
+
+    public UserBrowser setClientsAddress(String clientsAddress) {
+        this.clientsAddress = clientsAddress;
         return this;
     }
 
@@ -66,6 +75,10 @@ public class UserBrowser extends BaseEntity {
                 m = "December";
                 break;
         }
-        return ++counter + ". " + this.username + " browsed on " + dayOfMonth + "st" + " of " + m + ", " + year + ";";
+        return this.username +
+                " browsed on " +
+                dayOfMonth + "st" + " of " + m + ", " +
+                year + ". Clients address: " +
+                this.clientsAddress;
     }
 }

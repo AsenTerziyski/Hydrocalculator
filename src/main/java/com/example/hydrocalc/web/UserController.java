@@ -4,6 +4,9 @@ import com.example.hydrocalc.model.binding.UserEditBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.services.UserBrowserService;
 import com.example.hydrocalc.services.UserService;
+import com.example.hydrocalc.web.exceptions.UserNotAllowedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
     private final UserBrowserService userBrowserService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService, UserBrowserService userBrowserService) {
         this.userService = userService;
@@ -83,9 +87,8 @@ public class UserController {
         if (successfulRegistration) {
             return "index";
         } else {
-            //todo
+            return "oops";
         }
-        return "index";
     }
 
     @ModelAttribute
@@ -105,7 +108,13 @@ public class UserController {
     @PostMapping("/users/edit/post")
     public String postUsersEdit(@Valid UserEditBindingModel userEditBindingModel,
                                 BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes, Principal principal, Model model) {
+                                RedirectAttributes redirectAttributes, Principal principal, Model model, Authentication authentication) {
+
+        boolean roleIsAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equalsIgnoreCase("role_admin"));
+
+        if (!roleIsAdmin) {
+            throw new UserNotAllowedException(authentication.getName());
+        }
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
@@ -123,8 +132,7 @@ public class UserController {
 
         Long editedUserId = this.userService.editUserRole(userEditBindingModel.getUsername(), userEditBindingModel.getUserRole());
         if (editedUserId == -1) {
-            //todo - hanlde exception!
-            throw new NullPointerException();
+            return "oops";
         } else {
             this.userService.getUserRolesToString(userEditBindingModel.getUsername());
             model.addAttribute("userId", this.userService.findUserByUsername(userEditBindingModel.getUsername()).getId());
@@ -144,14 +152,16 @@ public class UserController {
         if (hasRoleAdmin) {
             boolean successfullyRemoved = this.userService.removeUser(id);
             if (successfullyRemoved) {
-                //todo
+                LOGGER.info("{} deleted user with id {}!", authentication.getName(), id);
+                return "successful";
             } else {
                 //todo
+                return "oops";
             }
         } else {
-            //todo
+            LOGGER.info("{} tried to delete another user!", authentication.getName());
+            throw new UserNotAllowedException(authentication.getName());
         }
-        return "redirect:/users/edit";
     }
 
     @GetMapping("/users/browser")

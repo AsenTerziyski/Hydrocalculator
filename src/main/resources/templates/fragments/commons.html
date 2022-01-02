@@ -38,10 +38,10 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 
-<body class="bg-dark">
-<div class="wrapper">
-    <header th:fragment="nav">
-        <nav class="main-nav text-warning">
+<body class="bg-dark mt-0">
+<div class="wrapper mt-0">
+    <header  th:fragment="nav">
+        <nav class="main-nav text-warning mt-0">
             <ul>
                 <th:block>
                     <li>
@@ -77,12 +77,6 @@
                     <li>
                         <a class="bg-info text-white" href="/">PP</a>
                     </li>
-                    <!--                    <li>-->
-                    <!--                        <a class="bg-info text-white" href="/">СТЪКЛОПЛАСТОВИ</a>-->
-                    <!--                    </li>-->
-                    <!--                    <li>-->
-                    <!--                        <a class="bg-info text-white" href="/">ЧУГУНЕНИ</a>-->
-                    <!--                    </li>-->
 
                 </th:block>
 
@@ -94,9 +88,7 @@
                     <li>
                         <a class="bg-info text-white" th:href="@{/users/edit}">Редактирай потребител</a>
                     </li>
-<!--                    <li>-->
-<!--                        <a class="bg-info text-white" href="/">Изтрий потребител</a>-->
-<!--                    </li>-->
+
                     <li>
                         <a class="bg-info text-white" th:href="@{/users/browser}">Браузинг история</a>
                     </li>
@@ -136,7 +128,7 @@
    role="button">НAЗАД</a>
 
 
-<footer th:fragment="footer" class="footer bg-blur rounded bg-dark mt-5">
+<footer th:fragment="footer" class="footer bg-blur rounded bg-dark mt-3">
     <div class="container-fluid text-center">
         <div class="h5 text-info bg-dark">
             <p><img class="logo align-content-center" width="35px" height="35px" src="/images/myLogo.png" alt=""></p>

@@ -145,6 +145,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         double internalDiameter = getPvcOPipeInternalDiameter(pvcOPipeBindingModel);
         if (internalDiameter == 0) {
             return -1L;
+
         }
 
         WaterTemperatureEnum waterTemperature = null;

@@ -8,17 +8,12 @@
 <main role="main " class="bg-dark">
 
 
-    <div class="container bg-dark rounded p-0 mt-5 w-75">
+    <div class="container bg-dark rounded p-0 mt-0 w-75">
         <form
                 th:action="@{/calc-pipe-PVC-O/post}"
                 th:object="${pvcOPipeBindingModel}"
                 th:method="POST"
                 class=" text-center text-light">
-
-            <!--            <h3 th:if="${standardDiscountBiggerThanVip} == true" class="mt-5 text-center">-->
-            <!--                <strong class="bg-blur rounded text-danger">-->
-            <!--                    Standard discount should be lesser than vips! </strong>-->
-            <!--            </h3>-->
 
             <div class="form-group row text-info">
                 <label for="flow" class="col-sm-2 col-form-label">Водно количество, l/s</label>

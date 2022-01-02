@@ -7,6 +7,7 @@ import com.example.hydrocalc.model.binding.PvcOPipeBindingModel;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserService;
+import com.example.hydrocalc.web.exceptions.UserNotAllowedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Locale;
 import java.util.Set;
 
 @Controller
@@ -159,8 +161,7 @@ public class PipeController {
         if (principal != null) {
             savedResultId = this.calcPipeResultService.calculatePvcOPipe(pvcOPipeBindingModel, principal.getName());
         } else {
-            //todo -> throw
-            savedResultId = this.calcPipeResultService.calculatePvcOPipe(pvcOPipeBindingModel, principal.getName());
+            throw new UserNotAllowedException("ANONYMOUS");
         }
 
         if (savedResultId < 0L) {
@@ -202,14 +203,12 @@ public class PipeController {
             if (successful) {
                 return "redirect:/catalog";
             } else {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                //todo - return smthng went wrong
+                throw new UserNotAllowedException("ANONYMOUS");
             }
         } else {
-            throw new IllegalArgumentException();
-            //todo throw not supported
+            throw new UserNotAllowedException("ANONYMOUS");
         }
-        return "redirect:/catalog";
+
     }
 
 
