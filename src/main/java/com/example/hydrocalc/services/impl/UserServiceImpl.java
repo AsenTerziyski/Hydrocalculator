@@ -13,6 +13,7 @@ import com.example.hydrocalc.services.PePipeService;
 import com.example.hydrocalc.services.PvcOPipeService;
 import com.example.hydrocalc.services.UserRoleService;
 import com.example.hydrocalc.services.UserService;
+import com.example.hydrocalc.web.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -152,8 +153,9 @@ public class UserServiceImpl implements UserService {
                 UserEntity userEntity = byUsernameIgnoreCase.get().setRoles(List.of(roleByRoleEnum));
                 return this.userRepository.save(userEntity).getId();
             }
+        } else {
+            throw new ObjectNotFoundException("user with username: " + username);
         }
-        return -1L;
     }
 
     @Override

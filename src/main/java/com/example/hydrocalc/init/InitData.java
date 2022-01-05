@@ -10,19 +10,19 @@ import java.time.LocalDateTime;
 
 @Component
 public class InitData implements CommandLineRunner {
-    private final CalcPipeResultService calcPipeResultService;
     private final UserRoleService userRoleService;
     private final UserService userService;
     private final PePipeService pePipeService;
     private final PvcOPipeService pvcOPipeService;
+    private final PpPipeService ppPipeService;
     private static final Logger LOGGER = LoggerFactory.getLogger(InitData.class);
 
-    public InitData(CalcPipeResultService calcPipeResultService, UserRoleService userRoleService, UserService userService, PePipeService pePipeService, PvcOPipeService pvcOPipeService) {
-        this.calcPipeResultService = calcPipeResultService;
+    public InitData(UserRoleService userRoleService, UserService userService, PePipeService pePipeService, PvcOPipeService pvcOPipeService, PpPipeService ppPipeService) {
         this.userRoleService = userRoleService;
         this.userService = userService;
         this.pePipeService = pePipeService;
         this.pvcOPipeService = pvcOPipeService;
+        this.ppPipeService = ppPipeService;
     }
 
     @Override
@@ -36,6 +36,7 @@ public class InitData implements CommandLineRunner {
         this.userService.initUsers();
         this.pePipeService.initPePipes();
         this.pvcOPipeService.initPvcOPipes();
+        this.ppPipeService.initPpPipes();
         LOGGER.info("HYDROCALCULATOR initialized at {}!", LocalDateTime.now());
     }
 }

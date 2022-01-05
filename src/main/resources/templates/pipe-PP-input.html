@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head"></head>
+<body class="bg-dark">
+<!--<header th:replace="fragments/commons::nav"></header>-->
+<main role="main " class="bg-dark">
+
+
+    <div class="container bg-dark rounded p-0 mt-0 w-75">
+        <form
+                th:action="@{/calc-pipe-PP/post}"
+                th:object="${ppPipeBindingModel}"
+                th:method="POST"
+                class=" text-center text-light">
+
+            <div class="form-group row text-info">
+                <label for="flow" class="col-sm-2 col-form-label">Водно количество, l/s</label>
+                <div class="col-sm-10">
+                    <input
+                            th:field="*{flowInLitersPerSeconds}"
+                            th:errorclass="is-invalid"
+                            type="text" class="form-control" id="flow"
+                            aria-describedby="nameHelpInline" placeholder="Водно количество">
+                    <small id="flowHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Водното количество трябва да е по-голямо от нула.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row text-info">
+                <label for="length" class="col-sm-2 col-form-label">Дължина, m</label>
+                <div class="col-sm-10">
+                    <input
+                            th:field="*{length}"
+                            th:errorclass="is-invalid"
+                            type="text" class="form-control" id="length"
+                            aria-describedby="nameHelpInline" placeholder="Дължина">
+                    <small id="lengthHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Дължината трябва да е по-голяма от нула.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row text-info">
+                <label for="dn" class="col-sm-2 col-form-label">DN</label>
+                <div class="col-sm-10">
+                    <select
+                            th:field="*{ppPipeEnum}"
+                            th:errorclass="is-invalid"
+                            id="dn" name="DN" class="custom-select"
+                            aria-describedby="categoryHelpInline">
+                        <option value="" selected>DN</option>
+                        <option
+                                th:each="DN:${T(com.example.hydrocalc.model.enums.PpPipeEnum).values()}"
+                                th:value="${DN}"
+                                th:text="${DN}"
+                                value="">DN
+                        </option>
+                    </select>
+                    <small id="dnHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Избери DN.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row text-info">
+                <label for="dn" class="col-sm-2 col-form-label">PN</label>
+                <div class="col-sm-10">
+                    <select
+                            th:field="*{nominalPressure}"
+                            th:errorclass="is-invalid"
+                            id="pn" name="PN" class="custom-select"
+                            aria-describedby="categoryHelpInline">
+                        <option value="" selected>PN</option>
+                        <option
+                                th:each="PN:${T(com.example.hydrocalc.model.enums.NominalPressure).values()}"
+                                th:value="${PN}"
+                                th:text="${PN}"
+                                value="">PN
+                        </option>
+                    </select>
+                    <small id="pnHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Избери PN.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row text-info">
+                <label for="roughnessHeightInMm" class="col-sm-2 col-form-label">Грапавина, mm</label>
+                <div class="col-sm-10">
+                    <textarea th:field="*{roughnessHeightInMm}"
+                              th:errorclass="is-invalid"
+                              class="form-control" id="roughnessHeightInMm"
+                              aria-describedby="roughnessHeightInMmHelpInline" placeholder="Грапавина">
+                    </textarea>
+                    <small id="descriptionHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Грапавината трябва да е по-голяма от нула.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row text-info">
+                <label for="waterTemp" class="col-sm-2 col-form-label">Темп. на водата в градуси целзий</label>
+                <div class="col-sm-10">
+                    <select
+                            th:field="*{temperature}"
+                            th:errorclass="is-invalid"
+                            id="waterTemp" name="waterTemp" class="custom-select"
+                            aria-describedby="categoryHelpInline">
+                        <option value="" selected>Tемпература на водата</option>
+                        <option
+                                th:each="t:${waterTemperatures}"
+                                th:value="${t}"
+                                th:text="${t}"
+                                value="">T
+                        </option>
+                    </select>
+                    <small id="waterTempHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Избери температура на водата.
+                    </small>
+                </div>
+            </div>
+
+            <button th:replace="fragments/commons::CALCULATE">ИЗЧИСЛИ</button>
+
+        </form>
+
+    </div>
+
+    <th:block sec:authorize="isAuthenticated()">
+        <a th:replace="fragments/commons::toMyEquations"></a>
+    </th:block>
+
+    <a th:replace="fragments/commons::toHomePage"></a>
+
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>

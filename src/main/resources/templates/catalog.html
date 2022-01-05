@@ -56,6 +56,22 @@
             </li>
         </div>
     </div>
+    <h6 class="text-warning">
+        <p>
+            3. PP ТРЪБИ:
+        </p>
+    </h6>
+    <div th:each="pp:${PP}" class="container align-content-center bg-dark p-0">
+        <div class="row align-content-center bg-dark">
+            <li class="list-group-item bg-dark text-info p-1">
+                <h6>
+                    <div class="card-text bg-dark text-red align-content-center"><span
+                            th:text="| ${pp};|">pp</span>
+                    </div>
+                </h6>
+            </li>
+        </div>
+    </div>
 
 
     <th:block sec:authorize="isAuthenticated()">

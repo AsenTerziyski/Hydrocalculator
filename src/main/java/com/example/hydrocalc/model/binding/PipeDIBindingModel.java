@@ -1,5 +1,6 @@
 package com.example.hydrocalc.model.binding;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -11,6 +12,7 @@ public class PipeDIBindingModel {
     private String temperature;
 
     @Positive
+    @NotNull
     public double getFlowInLitersPerSeconds() {
         return flowInLitersPerSeconds;
     }
@@ -21,6 +23,7 @@ public class PipeDIBindingModel {
     }
 
     @Positive
+    @NotNull
     public double getDI() {
         return DI;
     }
@@ -31,6 +34,7 @@ public class PipeDIBindingModel {
     }
 
     @Positive
+    @NotNull
     public double getLength() {
         return length;
     }
@@ -41,6 +45,7 @@ public class PipeDIBindingModel {
     }
 
     @Positive
+    @NotNull
     public double getRoughnessHeightInMm() {
         return roughnessHeightInMm;
     }
@@ -51,6 +56,7 @@ public class PipeDIBindingModel {
     }
 
     @NotNull
+    @NotBlank
     public String getTemperature() {
         return temperature;
     }

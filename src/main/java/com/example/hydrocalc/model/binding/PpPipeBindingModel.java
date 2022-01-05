@@ -2,21 +2,19 @@ package com.example.hydrocalc.model.binding;
 
 import com.example.hydrocalc.model.enums.NominalPressure;
 import com.example.hydrocalc.model.enums.PePipeEnum;
-import com.example.hydrocalc.model.enums.PvcOPipeEnum;
+import com.example.hydrocalc.model.enums.PpPipeEnum;
 import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-import java.util.Set;
 
-public class PvcOPipeBindingModel {
+public class PpPipeBindingModel {
     private double flowInLitersPerSeconds;
     private double length;
     private double roughnessHeightInMm;
-    private PvcOPipeEnum pvcOPipeEnum;
+    private PpPipeEnum ppPipeEnum;
     private NominalPressure nominalPressure;
     private WaterTemperatureEnum waterTemperature;
     private String temperature;
@@ -27,7 +25,7 @@ public class PvcOPipeBindingModel {
         return flowInLitersPerSeconds;
     }
 
-    public PvcOPipeBindingModel setFlowInLitersPerSeconds(double flowInLitersPerSeconds) {
+    public PpPipeBindingModel setFlowInLitersPerSeconds(double flowInLitersPerSeconds) {
         this.flowInLitersPerSeconds = flowInLitersPerSeconds;
         return this;
     }
@@ -38,7 +36,7 @@ public class PvcOPipeBindingModel {
         return length;
     }
 
-    public PvcOPipeBindingModel setLength(double length) {
+    public PpPipeBindingModel setLength(double length) {
         this.length = length;
         return this;
     }
@@ -49,23 +47,21 @@ public class PvcOPipeBindingModel {
         return roughnessHeightInMm;
     }
 
-    public PvcOPipeBindingModel setRoughnessHeightInMm(double roughnessHeightInMm) {
+    public PpPipeBindingModel setRoughnessHeightInMm(double roughnessHeightInMm) {
         this.roughnessHeightInMm = roughnessHeightInMm;
         return this;
     }
 
     @Enumerated
     @NotNull
-    public PvcOPipeEnum getPvcOPipeEnum() {
-        return pvcOPipeEnum;
+    public PpPipeEnum getPpPipeEnum() {
+        return ppPipeEnum;
     }
 
-    public PvcOPipeBindingModel setPvcOPipeEnum(PvcOPipeEnum pvcOPipeEnum) {
-        this.pvcOPipeEnum = pvcOPipeEnum;
+    public PpPipeBindingModel setPpPipeEnum(PpPipeEnum ppPipeEnum) {
+        this.ppPipeEnum = ppPipeEnum;
         return this;
     }
-
-
 
     @Enumerated
     @NotNull
@@ -73,7 +69,7 @@ public class PvcOPipeBindingModel {
         return nominalPressure;
     }
 
-    public PvcOPipeBindingModel setNominalPressure(NominalPressure nominalPressure) {
+    public PpPipeBindingModel setNominalPressure(NominalPressure nominalPressure) {
         this.nominalPressure = nominalPressure;
         return this;
     }
@@ -83,18 +79,18 @@ public class PvcOPipeBindingModel {
         return waterTemperature;
     }
 
-    public PvcOPipeBindingModel setWaterTemperature(WaterTemperatureEnum waterTemperature) {
+    public PpPipeBindingModel setWaterTemperature(WaterTemperatureEnum waterTemperature) {
         this.waterTemperature = waterTemperature;
         return this;
     }
 
-    @NotNull
     @NotBlank
+    @NotNull
     public String getTemperature() {
         return temperature;
     }
 
-    public PvcOPipeBindingModel setTemperature(String temperature) {
+    public PpPipeBindingModel setTemperature(String temperature) {
         this.temperature = temperature;
         return this;
     }

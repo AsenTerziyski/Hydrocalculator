@@ -5,6 +5,7 @@ import com.example.hydrocalc.model.enums.PePipeEnum;
 import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
 
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -20,6 +21,7 @@ public class PePipeBindingModel {
     private String temperature;
 
     @Positive
+    @NotNull
     public double getFlowInLitersPerSeconds() {
         return flowInLitersPerSeconds;
     }
@@ -30,6 +32,7 @@ public class PePipeBindingModel {
     }
 
     @Positive
+    @NotNull
     public double getLength() {
         return length;
     }
@@ -40,6 +43,7 @@ public class PePipeBindingModel {
     }
 
     @Positive
+    @NotNull
     public double getRoughnessHeightInMm() {
         return roughnessHeightInMm;
     }
@@ -81,6 +85,7 @@ public class PePipeBindingModel {
         return this;
     }
 
+    @NotBlank
     @NotNull
     public String getTemperature() {
         return temperature;

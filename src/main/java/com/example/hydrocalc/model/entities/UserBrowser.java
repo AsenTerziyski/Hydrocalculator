@@ -77,8 +77,8 @@ public class UserBrowser extends BaseEntity {
         }
         return this.username +
                 " browsed on " +
-                dayOfMonth + "st" + " of " + m + ", " +
+                dayOfMonth  + " of " + m + ", " +
                 year + ". Clients address: " +
-                this.clientsAddress;
+                this.clientsAddress + ";";
     }
 }

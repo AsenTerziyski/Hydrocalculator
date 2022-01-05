@@ -3,22 +3,15 @@ package com.example.hydrocalc.services.impl;
 import com.example.hydrocalc.calculator.CalculatorConstants;
 import com.example.hydrocalc.calculator.HydroCalculator;
 import com.example.hydrocalc.model.binding.PePipeBindingModel;
+import com.example.hydrocalc.model.binding.PpPipeBindingModel;
 import com.example.hydrocalc.model.binding.PvcOPipeBindingModel;
-import com.example.hydrocalc.model.entities.CalculatorPipeResults;
+import com.example.hydrocalc.model.entities.*;
 import com.example.hydrocalc.model.binding.PipeDIBindingModel;
-import com.example.hydrocalc.model.entities.PePipeEntity;
-import com.example.hydrocalc.model.entities.PvcOPipeEntity;
-import com.example.hydrocalc.model.entities.UserEntity;
-import com.example.hydrocalc.model.enums.NominalPressure;
-import com.example.hydrocalc.model.enums.PePipeEnum;
-import com.example.hydrocalc.model.enums.PvcOPipeEnum;
-import com.example.hydrocalc.model.enums.WaterTemperatureEnum;
+import com.example.hydrocalc.model.enums.*;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.repositrory.CalculatorPipeResultRepository;
-import com.example.hydrocalc.services.CalcPipeResultService;
-import com.example.hydrocalc.services.PePipeService;
-import com.example.hydrocalc.services.PvcOPipeService;
-import com.example.hydrocalc.services.UserService;
+import com.example.hydrocalc.services.*;
+import com.example.hydrocalc.web.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +32,16 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     private final ModelMapper modelMapper;
     private final PePipeService pePipeService;
     private final PvcOPipeService pvcOPipeService;
+    private final PpPipeService ppPipeService;
     private static final Logger LOGGER = LoggerFactory.getLogger(CalcPipeResultServiceImpl.class);
 
-    public CalcPipeResultServiceImpl(CalculatorPipeResultRepository calculatorPipeResultRepository, UserService userService, ModelMapper modelMapper, PePipeService pePipeService, PvcOPipeService pvcOPipeService) {
+    public CalcPipeResultServiceImpl(CalculatorPipeResultRepository calculatorPipeResultRepository, UserService userService, ModelMapper modelMapper, PePipeService pePipeService, PvcOPipeService pvcOPipeService, PpPipeService ppPipeService) {
         this.calculatorPipeResultRepository = calculatorPipeResultRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.pePipeService = pePipeService;
         this.pvcOPipeService = pvcOPipeService;
+        this.ppPipeService = ppPipeService;
     }
 
     @Override
@@ -145,7 +140,6 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         double internalDiameter = getPvcOPipeInternalDiameter(pvcOPipeBindingModel);
         if (internalDiameter == 0) {
             return -1L;
-
         }
 
         WaterTemperatureEnum waterTemperature = null;
@@ -172,6 +166,63 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         pvcOPipeResults.setUser(userByUsername);
         return addNewResult(pvcOPipeResults, username);
     }
+
+    @Override
+    public Long calculatePpPipe(PpPipeBindingModel ppPipeBindingModel, String username) {
+        System.out.println();
+        double internalDiameter = getPpPipeInternalDiameter(ppPipeBindingModel);
+        if (internalDiameter == 0) {
+            return -1L;
+        }
+
+        WaterTemperatureEnum waterTemperature = null;
+        double kinematicViscosity = 0;
+
+        String inputTemperature = ppPipeBindingModel.getTemperature().substring(0, 2);
+        WaterTemperatureEnum[] values = WaterTemperatureEnum.values();
+        for (WaterTemperatureEnum value : values) {
+            String enumTemperature = value.name().substring(1, 3);
+            if (inputTemperature.equalsIgnoreCase(enumTemperature)) {
+                kinematicViscosity = value.getKinematicViscosity();
+                waterTemperature = value;
+                break;
+            }
+        }
+
+        CalculatorPipeResults ppPipeResults = HydroCalculator.calculatePipe(internalDiameter, ppPipeBindingModel.getFlowInLitersPerSeconds(),
+                ppPipeBindingModel.getRoughnessHeightInMm(), ppPipeBindingModel.getLength(), kinematicViscosity);
+
+        setWaterTemperature(waterTemperature, ppPipeResults);
+        setDnAndPnOfPpPipe(ppPipeBindingModel, ppPipeResults);
+        ppPipeResults.setCreatedOn(getPostedOnNow());
+        ppPipeResults.setMaterial("Материал на тръбата: PP");
+        UserEntity userByUsername = this.userService.findUserByUsername(username);
+        ppPipeResults.setUser(userByUsername);
+        return addNewResult(ppPipeResults, username);
+    }
+
+    private void setDnAndPnOfPpPipe(PpPipeBindingModel ppPipeBindingModel, CalculatorPipeResults ppPipeResults) {
+        ppPipeResults.setPipeNominalDiameter(ppPipeBindingModel.getPpPipeEnum().name());
+        ppPipeResults.setNominalPressure(ppPipeBindingModel.getNominalPressure().name());
+    }
+
+    private double getPpPipeInternalDiameter(PpPipeBindingModel ppPipeBindingModel) {
+
+        NominalPressure nominalPressure = ppPipeBindingModel.getNominalPressure();
+        PpPipeEntity ppPipe = this.ppPipeService.findPpPipeInternalDiameterByDn(ppPipeBindingModel.getPpPipeEnum());
+        if (ppPipe == null) {
+            throw new ObjectNotFoundException(String.format("тръба PP с DN%s и PN%s", ppPipeBindingModel.getPpPipeEnum().name(), ppPipeBindingModel.getNominalPressure().name()));
+        }
+        double internalDiameter = 0.00;
+        if (nominalPressure.equals(NominalPressure.PN16)) {
+            internalDiameter = ppPipe.getDinPN16();
+        }
+        if (nominalPressure.equals(NominalPressure.PN20)) {
+            internalDiameter = ppPipe.getDinPN20();
+        }
+        return internalDiameter;
+    }
+
 
     @Override
     public String getAvailableDiametersForPePipes(NominalPressure nominalPressure) {
@@ -252,6 +303,38 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
     }
 
     @Override
+    public String getAvailableDiametersForPpPipes(NominalPressure nominalPressure) {
+        StringBuilder output = new StringBuilder();
+        PpPipeEnum[] values = PpPipeEnum.values();
+
+        String pipeMaterial = PpPipeEnum.class.getName().split("\\.")[5].substring(0, 2).toUpperCase(Locale.ROOT);
+
+        String format = String.format("Наличните диаметри за тръби %s и %s са: ", pipeMaterial, nominalPressure.name());
+        switch (nominalPressure.name().toUpperCase(Locale.ROOT)) {
+            case "PN16":
+                for (PpPipeEnum value : values) {
+                    double dinPN16 = value.getDinPN16();
+                    if (dinPN16 != 0) {
+                        output.append(value.name()).append(", ");
+                    }
+                }
+                break;
+            case "PN20":
+                for (PpPipeEnum value : values) {
+                    double dinPN20 = value.getDinPN20();
+                    if (dinPN20 != 0) {
+                        output.append(value.name()).append(", ");
+                    }
+                }
+                break;
+        }
+        if (output.toString().trim().isBlank()) {
+            return String.format("Не са налични тръби %s за %s", pipeMaterial, nominalPressure.name());
+        }
+        return format + output.substring(0, output.length() - 2).trim();
+    }
+
+    @Override
     public boolean removeCalculation(Long id) {
         CalculatorPipeResults calculatorPipeResults = this.calculatorPipeResultRepository.findById(id).orElse(null);
         if (calculatorPipeResults != null) {
@@ -306,6 +389,7 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         LOGGER.info("Didn't find any results older than 30 days!");
     }
 
+
     @Override
     public CalculatorPipeResultsModelView findResultById(Long savedResultId) {
         CalculatorPipeResults savedResult = this.calculatorPipeResultRepository.findById(savedResultId).orElse(null);
@@ -332,6 +416,8 @@ public class CalcPipeResultServiceImpl implements CalcPipeResultService {
         }
         return internalDiameter;
     }
+
+
 
     private String getPostedOnNow() {
         LocalDateTime now = LocalDateTime.now();

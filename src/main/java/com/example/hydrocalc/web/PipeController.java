@@ -1,9 +1,6 @@
 package com.example.hydrocalc.web;
 
-import com.example.hydrocalc.model.binding.PePipeBindingModel;
-import com.example.hydrocalc.model.binding.PipeDIBindingModel;
-import com.example.hydrocalc.model.binding.PipeEditInternalDiameterBindingModel;
-import com.example.hydrocalc.model.binding.PvcOPipeBindingModel;
+import com.example.hydrocalc.model.binding.*;
 import com.example.hydrocalc.model.view.CalculatorPipeResultsModelView;
 import com.example.hydrocalc.services.CalcPipeResultService;
 import com.example.hydrocalc.services.UserService;
@@ -186,6 +183,11 @@ public class PipeController {
         return new PipeEditInternalDiameterBindingModel();
     }
 
+    @GetMapping("/unsuccessful")
+    public String getUnsuccessfulPage() {
+        return "unsuccessful";
+    }
+
     @PostMapping("/pipes/edit-di")
     public String postPipeEdit(@Valid PipeEditInternalDiameterBindingModel pipeEditInternalDiameterBindingModel,
                                BindingResult bindingResult,
@@ -203,13 +205,58 @@ public class PipeController {
             if (successful) {
                 return "redirect:/catalog";
             } else {
-                throw new UserNotAllowedException("ANONYMOUS");
+                return "redirect:/unsuccessful";
             }
         } else {
             throw new UserNotAllowedException("ANONYMOUS");
         }
-
     }
+
+    @ModelAttribute
+    public PpPipeBindingModel ppPipeBindingModel() {
+        return new PpPipeBindingModel();
+    }
+
+    @GetMapping("/calc-pipe-PP")
+    public String getCalcPpPipePage(Model model) {
+        addVelocityAttributesToModelIfTheyDoNotExist(model);
+        Set<String> temperatureSet = this.calcPipeResultService.getTemperatureSet();
+        model.addAttribute("waterTemperatures", temperatureSet);
+        return "pipe-PP-input";
+    }
+
+    @PostMapping("/calc-pipe-PP/post")
+    public String postPvcOPipeInput(@Valid PpPipeBindingModel ppPipeBindingModel,
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes,
+                                    Model model, Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute("ppPipeBindingModel", ppPipeBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.ppPipeBindingModel", bindingResult);
+            return "redirect:/calc-pipe-PP";
+        }
+
+        Long savedResultId = -1L;
+        if (principal != null) {
+            savedResultId = this.calcPipeResultService.calculatePpPipe(ppPipeBindingModel, principal.getName());
+        } else {
+            throw new UserNotAllowedException("ANONYMOUS");
+        }
+
+        System.out.println();
+        if (savedResultId < 0L) {
+            String availableDiametersForPpPipes = this.calcPipeResultService.getAvailableDiametersForPpPipes(ppPipeBindingModel.getNominalPressure());
+            model.addAttribute("availableDiametersForPpPipes", availableDiametersForPpPipes);
+            return "pipe-PP-available-diameters";
+        }
+        CalculatorPipeResultsModelView resultById = this.calcPipeResultService.findResultById(savedResultId);
+        model.addAttribute("resultPpPipe", resultById);
+        addVelocityAttributesToModel(model, resultById);
+        return "pipe-PP-exit";
+    }
+
 
 
 }

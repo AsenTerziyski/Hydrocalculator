@@ -18,7 +18,7 @@
             Внимание: ниска скорост на водата! </strong>
     </h5>
 
-    <div th:object="${resultPvcOPipe}" class="container align-content-center bg-dark p-2 mt-3">
+    <div th:object="${resultPpPipe}" class="container align-content-center bg-dark p-2 mt-3">
         <div class="row align-content-center bg-dark">
             <li class="list-group-item bg-dark text-warning">
                 <h6>
@@ -63,9 +63,8 @@
         </div>
     </div>
 
-    <a th:fragment="calculateAgain"
-       class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-3 border border-warning"
-       href="/calc-pipe-PVC-O"
+    <a class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-3 border border-warning"
+       href="/calc-pipe-PP"
        role="button">ИЗЧИСЛИ ОТНОВО</a>
 
     <th:block sec:authorize="isAuthenticated()">

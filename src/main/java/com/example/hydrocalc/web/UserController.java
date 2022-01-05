@@ -4,6 +4,7 @@ import com.example.hydrocalc.model.binding.UserEditBindingModel;
 import com.example.hydrocalc.model.binding.UserRegisterBindingModel;
 import com.example.hydrocalc.services.UserBrowserService;
 import com.example.hydrocalc.services.UserService;
+import com.example.hydrocalc.web.exceptions.ObjectNotFoundException;
 import com.example.hydrocalc.web.exceptions.UserNotAllowedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,16 +131,13 @@ public class UserController {
             return "redirect:/users/edit";
         }
 
-        Long editedUserId = this.userService.editUserRole(userEditBindingModel.getUsername(), userEditBindingModel.getUserRole());
-        if (editedUserId == -1) {
-            return "oops";
-        } else {
-            this.userService.getUserRolesToString(userEditBindingModel.getUsername());
-            model.addAttribute("userId", this.userService.findUserByUsername(userEditBindingModel.getUsername()).getId());
-            model.addAttribute("editedUser", this.userService.findUserByUsername(userEditBindingModel.getUsername()));
-            model.addAttribute("editedUserRoles", this.userService.getUserRolesToString(userEditBindingModel.getUsername()));
-            return "user-profile";
-        }
+        this.userService.editUserRole(userEditBindingModel.getUsername(), userEditBindingModel.getUserRole());
+
+        this.userService.getUserRolesToString(userEditBindingModel.getUsername());
+        model.addAttribute("userId", this.userService.findUserByUsername(userEditBindingModel.getUsername()).getId());
+        model.addAttribute("editedUser", this.userService.findUserByUsername(userEditBindingModel.getUsername()));
+        model.addAttribute("editedUserRoles", this.userService.getUserRolesToString(userEditBindingModel.getUsername()));
+        return "user-profile";
 
     }
 
@@ -155,8 +153,8 @@ public class UserController {
                 LOGGER.info("{} deleted user with id {}!", authentication.getName(), id);
                 return "successful";
             } else {
-                //todo
-                return "oops";
+                LOGGER.info("Could not find user with ID:{}", id);
+                throw new ObjectNotFoundException("user with ID:" + id);
             }
         } else {
             LOGGER.info("{} tried to delete another user!", authentication.getName());

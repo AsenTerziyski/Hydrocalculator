@@ -75,7 +75,7 @@
                         <a class="bg-info text-white" th:href="@{/calc-pipe-PVC-O}">PVC-O</a>
                     </li>
                     <li>
-                        <a class="bg-info text-white" href="/">PP</a>
+                        <a class="bg-info text-white" th:href="@{/calc-pipe-PP}">PP</a>
                     </li>
 
                 </th:block>
@@ -92,9 +92,9 @@
                     <li>
                         <a class="bg-info text-white" th:href="@{/users/browser}">Браузинг история</a>
                     </li>
-                    <li>
-                        <a class="bg-info text-white" href="/">Отзиви</a>
-                    </li>
+<!--                    <li>-->
+<!--                        <a class="bg-info text-white" href="/">Отзиви</a>-->
+<!--                    </li>-->
                 </th:block>
 
                 <th:block sec:authorize="isAuthenticated()">
@@ -125,7 +125,7 @@
 
 <a th:fragment="toHomePage"
    class="btn btn-dark btn-block btn-info bg-dark text-warning align-content-center mt-3 border border-warning" href="/"
-   role="button">НAЗАД</a>
+   role="button">НАЧАЛО</a>
 
 
 <footer th:fragment="footer" class="footer bg-blur rounded bg-dark mt-3">

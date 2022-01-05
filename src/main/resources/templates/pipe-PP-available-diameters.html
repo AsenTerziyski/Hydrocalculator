@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/commons::head"></head>
+
+<body class="bg-dark">
+<!--<header th:replace="fragments/commons::nav"></header>-->
+
+<main role="main" class="bg-dark">
+
+    <div class="container align-content-center bg-dark p-2 mt-3">
+
+        <div class="card-text bg-dark text-red align-content-center m-sm-auto text-warning"><span
+                th:text="|*{availableDiametersForPpPipes}. Опитай с друг диаметър или налягане!|"></span>
+        </div>
+
+    </div>
+
+    <a th:replace="fragments/commons::calculateAgain"></a>
+
+    <th:block sec:authorize="isAuthenticated()">
+        <a th:replace="fragments/commons::toMyEquations"></a>
+    </th:block>
+
+    <a th:replace="fragments/commons::toHomePage"></a>
+
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>

@@ -15,7 +15,11 @@
         <div class="row align-content-center">
 
             <div class="container-fluid">
-                <h5 class="text-center text-danger mt-5">Успешна операция!</h5>
+                <h5 class="text-center text-danger mt-5">Opps! We have a problem here!</h5>
+                <h5 class="text-center text-danger mt-1">It seems that</h5>
+                <h5 class="text-center text-danger mt-1">
+                    <th:block th:text="${notFound}"></th:block>
+                </h5>
             </div>
 
         </div>

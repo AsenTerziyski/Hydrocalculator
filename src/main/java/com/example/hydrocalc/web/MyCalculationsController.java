@@ -26,7 +26,7 @@ public class MyCalculationsController {
     }
 
 
-    @Transactional
+//    @Transactional
     @GetMapping
     public String getMyCalculationsPage(Principal principal, Model model) {
         List<CalculatorPipeResultsModelView> myCalculations = this.userService.findMyCalculations(principal);
@@ -50,9 +50,9 @@ public class MyCalculationsController {
     public String removeCalculation(@PathVariable Long id, Principal principal, Model model) {
         if (this.calcPipeResultService.isOwnerOrAdmin(principal, id)) {
             boolean removed = this.calcPipeResultService.removeCalculation(id);
+            return "redirect:/my-calculations";
         } else {
             throw new UserNotAllowedException(principal.getName());
         }
-        return "redirect:/my-calculations";
     }
 }
