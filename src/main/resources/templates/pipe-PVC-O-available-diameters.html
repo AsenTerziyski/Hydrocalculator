@@ -17,7 +17,10 @@
 
     </div>
 
-    <a th:replace="fragments/commons::calculateAgain"></a>
+    <a th:fragment="calculateAgain"
+       class="btn btn-dark btn-block btn-warning bg-dark text-warning align-content-center mt-3 border border-warning"
+       href="/calc-pipe-PVC-O"
+       role="button">ИЗЧИСЛИ ОТНОВО</a>
 
     <th:block sec:authorize="isAuthenticated()">
         <a th:replace="fragments/commons::toMyEquations"></a>
