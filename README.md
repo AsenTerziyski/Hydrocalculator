@@ -7,5 +7,10 @@ https://hydrocalculator.herokuapp.com/
 Хидрокалкулатор е на български език и е насочен към български потребители.
 Въпреки, че някои от функционалностите на Хидрокалкулатор работят, той все още е в процес на разработване.
 
+Hydrocalculator is a tool for estimating the losses of energy (measured in water column meters) in pressurised pipes. It can be used by Civil Engineers and Students
+from UACEG, Sofia.
+Hydrocaluculator implements Swammy-Jane equation and its target is bulgarian users. Inspite of that some of its main functioanalities work,
+Hydorcalculator is in processof development.
+
 
 
