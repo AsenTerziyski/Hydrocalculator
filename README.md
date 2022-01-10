@@ -9,7 +9,7 @@ https://hydrocalculator.herokuapp.com/
 
 Hydrocalculator is a tool for estimating headlosses (measured in meters water column) in pressurised pipes. It can be used by Civil Engineers and Students
 from UACEG, Sofia.
-Hydrocaluculator implements Swammy-Jane equation and its target is bulgarian users. Inspite of that some of its main functioanalities work,
+Hydrocaluculator implements Swammy-Jane equation and its target are bulgarian users. Inspite of that some of its main functioanalities work,
 Hydorcalculator is in process of development.
 
 
