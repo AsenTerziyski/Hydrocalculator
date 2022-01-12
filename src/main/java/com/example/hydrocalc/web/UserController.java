@@ -84,12 +84,8 @@ public class UserController {
             return "users-register";
         }
 
-        boolean successfulRegistration = this.userService.registerNewUserInHydrocalculator(userRegisterBindingModel);
-        if (successfulRegistration) {
-            return "index";
-        } else {
-            return "oops";
-        }
+        this.userService.registerNewUserInHydrocalculator(userRegisterBindingModel);
+        return "redirect:/";
     }
 
     @ModelAttribute
